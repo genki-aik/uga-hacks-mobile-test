@@ -17,6 +17,7 @@ import {UserLogIn} from './UserLogIn';
 import {UserLogOut} from './UserLogOut';
 import {HelloUser} from './HelloUser';
 import Styles from './Styles';
+import { AuthContextProvider } from './context/AuthContext';
 
 // // Your Parse initialization configuration goes here
 // Parse.setAsyncStorage(AsyncStorage);
@@ -52,7 +53,7 @@ function UserRegistrationScreen() {
 
 function UserLogInScreen() {
   return (
-    <>
+    <AuthContextProvider>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
@@ -68,13 +69,13 @@ function UserLogInScreen() {
         </View>
         <UserLogIn />
       </SafeAreaView>
-    </>
+    </AuthContextProvider>
   );
 }
 
 function HomeScreen() {
   return (
-    <>
+    <AuthContextProvider>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
@@ -92,7 +93,7 @@ function HomeScreen() {
         <HelloUser />
         <UserLogOut />
       </SafeAreaView>
-    </>
+    </AuthContextProvider>
   );
 }
 

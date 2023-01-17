@@ -21,9 +21,13 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
   const [password, setPassword] = useState('');
 
   const logInWithEmail = async () => {
-    const success = await logIn(email, password);
-    navigation.navigate("Home" as never);
-    alert("LOG IN")
+    try {
+        const success = await logIn(email, password);
+        navigation.navigate("Home" as never);
+        alert("LOG IN")
+    } catch (e) {
+        alert(e)
+    }
   }
 
 //   const doUserLogIn = async function (): Promise<boolean> {
