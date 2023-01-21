@@ -36,11 +36,8 @@ function UserRegistrationScreen() {
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
           <Image style={Styles.login_header_logo} />
-          <Text style={Styles.login_header_text}>
-            <Text style={Styles.login_header_text_bold}>
-              {"React Native on Back4App - "}
-            </Text>
-            {" User registration"}
+          <Text style={Styles.login_header_text_bold}>
+            {"User Registration"}
           </Text>
         </View>
         <UserRegistration />
@@ -56,12 +53,7 @@ function UserLogInScreen() {
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
           <Image style={Styles.login_header_logo} />
-          <Text style={Styles.login_header_text}>
-            <Text style={Styles.login_header_text_bold}>
-              {"React Native on Back4App - "}
-            </Text>
-            {" User login"}
-          </Text>
+          <Text style={Styles.login_header_text_bold}>{"User Login"}</Text>
         </View>
         <UserLogIn />
       </SafeAreaView>

@@ -3,13 +3,13 @@ import { StyleSheet } from "react-native";
 const Styles = StyleSheet.create({
   login_container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#e3e3e3",
   },
   login_header: {
     alignItems: "center",
-    paddingTop: 30,
-    paddingBottom: 50,
-    backgroundColor: "#208AEC",
+    paddingTop: 20,
+    paddingBottom: 10,
+    backgroundColor: "#e3e3e3",
   },
   login_header_logo: {
     width: 220,
@@ -18,10 +18,11 @@ const Styles = StyleSheet.create({
   login_header_text: {
     marginTop: 15,
     color: "#f0f0f0",
-    fontSize: 16,
+    fontSize: 24,
   },
   login_header_text_bold: {
-    color: "#fff",
+    fontSize: 32,
+    color: "#DC4141",
     fontWeight: "bold",
   },
   login_wrapper: {
@@ -31,7 +32,7 @@ const Styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     marginTop: -10,
-    backgroundColor: "#fff",
+    backgroundColor: "#e3e3e3",
     alignItems: "center",
   },
   form: {
@@ -49,7 +50,7 @@ const Styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 44,
-    backgroundColor: "#0065A4",
+    backgroundColor: "#DC4141",
     borderRadius: 50,
   },
   button_label: {
@@ -69,7 +70,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: 1,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "black",
   },
   login_social_separator_text: {
     marginHorizontal: 10,
@@ -79,7 +80,7 @@ const Styles = StyleSheet.create({
   login_social_buttons: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 40,
   },
   login_social_button: {
     alignItems: "center",
@@ -88,7 +89,7 @@ const Styles = StyleSheet.create({
     height: 60,
     marginHorizontal: 12,
     borderWidth: 1,
-    borderColor: "#E7E7E7",
+    borderColor: "black",
     borderRadius: 60,
   },
   login_social_icon: {
@@ -105,6 +106,7 @@ const Styles = StyleSheet.create({
     alignItems: "center",
     color: "#808080",
     fontSize: 15,
+    marginTop: 30,
   },
   login_footer_link: {
     color: "#208AEC",
