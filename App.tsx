@@ -6,12 +6,20 @@
  */
 import "react-native-gesture-handler";
 import React, { useContext, useEffect, useState } from "react";
-import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
-
+import {
+  Image,
+  SafeAreaView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Parse from 'parse/react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { UserRegistration } from "./UserRegistration";
 import { UserLogIn } from "./UserLogIn";
 import { UserLogOut } from "./UserLogOut";
@@ -24,6 +32,8 @@ import {
 } from "./context/AuthContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import Schedule from "./Schedule";
+import ScavengerHunt from "./ScavengerHunt";
 
 // // Your Parse initialization configuration goes here
 // Parse.setAsyncStorage(AsyncStorage);
@@ -88,6 +98,17 @@ function LogoTitle() {
   );
 }
 
+function ProfileFooter() {
+  return (
+    <TouchableOpacity>
+      <Image
+        style={{ width: 15, height: 15 }}
+        source={require("./assets/byte_mini.png")}
+      />
+    </TouchableOpacity>
+  );
+}
+
 function HomeScreen() {
   return (
     <>
@@ -133,7 +154,7 @@ const App = () => {
   //   console.log("USE effect");
   //   console.log(user);
   // }, [user]);
-
+  const Tab = createBottomTabNavigator();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
@@ -154,39 +175,86 @@ const App = () => {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#DC4141",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-              color: "white",
-            },
-          }}
-        >
-          {!user ? (
-            <>
-              <Stack.Screen
-                name="Login"
-                component={UserLogInScreen}
-                options={{ headerTitle: () => <LogoTitle /> }}
-              />
-              <Stack.Screen
-                name="Sign Up"
-                component={UserRegistrationScreen}
-                options={{ headerTitle: () => <LogoTitle /> }}
-              />
-            </>
-          ) : (
+        {!user ? (
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#DC4141",
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+                color: "white",
+              },
+            }}
+          >
             <Stack.Screen
-              name="Home"
-              component={HomeScreen}
+              name="Login"
+              component={UserLogInScreen}
               options={{ headerTitle: () => <LogoTitle /> }}
             />
-          )}
-        </Stack.Navigator>
+            <Stack.Screen
+              name="Sign Up"
+              component={UserRegistrationScreen}
+              options={{ headerTitle: () => <LogoTitle /> }}
+            />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator
+            screenOptions={{
+              tabBarStyle: {
+                backgroundColor: "black",
+              },
+              tabBarActiveTintColor: "white",
+              tabBarInactiveTintColor: "white",
+              tabBarActiveBackgroundColor: "#DC4141",
+              headerStyle: {
+                backgroundColor: "#DC4141",
+              },
+              headerTintColor: "black",
+              headerTitleStyle: {
+                fontWeight: "bold",
+                color: "white",
+              },
+            }}
+          >
+            <Tab.Screen
+              name="Profile"
+              component={HomeScreen}
+              options={{
+                headerTitle: () => <LogoTitle />,
+                tabBarIcon: ({}) => {
+                  return (
+                    <Image
+                      style={{ width: 25, height: 25 }}
+                      source={require("./assets/byte_mini.png")}
+                    />
+                  );
+                },
+              }}
+            />
+            <Tab.Screen
+              name="Schedule"
+              component={Schedule}
+              options={{
+                headerTitle: () => <LogoTitle />,
+                tabBarIcon: ({}) => {
+                  return <Icon name="calendar" size={25} color="white" />;
+                },
+              }}
+            />
+            <Tab.Screen
+              name="Scavenger Hunt"
+              component={ScavengerHunt}
+              options={{
+                headerTitle: () => <LogoTitle />,
+                tabBarIcon: ({}) => {
+                  return <Icon name="search" size={25} color="white" />;
+                },
+              }}
+            />
+          </Tab.Navigator>
+        )}
       </NavigationContainer>
     </AuthContextProvider>
   );
