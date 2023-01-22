@@ -1,23 +1,26 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  collection,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-} from "firebase/firestore";
-import { auth, db } from "../config/firebase";
+// import {
+//   GoogleAuthProvider,
+//   signInWithPopup,
+//   onAuthStateChanged,
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   signOut,
+//   sendEmailVerification,
+//   sendPasswordResetEmail,
+// } from "firebase/auth";
+// import {
+//   doc,
+//   setDoc,
+//   collection,
+//   updateDoc,
+//   serverTimestamp,
+//   getDoc,
+// } from "firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { serverTimestamp } from "firebase/firestore";
 
 export interface UserType {
   email: string | null;
@@ -36,7 +39,7 @@ export interface UserInfoType {
   //user_type: Users | null;
 }
 
-const AuthContext = createContext({});
+export const AuthContext = createContext({});
 
 export const useAuth = () => useContext<any>(AuthContext);
 
@@ -55,22 +58,27 @@ export const AuthContextProvider = ({
     },
     //user_type: null
   });
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Stage Environment
-  const userRefStage = collection(db, "users-stage");
-  const eSportsRefStage = collection(db, "user-e-sports-details-stage");
-  const registerRefStage = collection(db, "user-registration-details-stage");
-  const workshopRefStage = collection(db, "user-workshop-details-stage");
+  // const userRefStage = collection(db, "users-stage");
+  // const eSportsRefStage = collection(db, "user-e-sports-details-stage");
+  // const registerRefStage = collection(db, "user-registration-details-stage");
+  // const workshopRefStage = collection(db, "user-workshop-details-stage");
 
-  // Prod Environment
-  const userRef = collection(db, "users");
-  const eSportsRef = collection(db, "user-e-sports-details");
-  const registerRef = collection(db, "user-registration-details");
-  const workshopRef = collection(db, "user-workshop-details");
+  // // Prod Environment
+  // const userRef = collection(db, "users");
+  // const eSportsRef = collection(db, "user-e-sports-details");
+  // const registerRef = collection(db, "user-registration-details");
+  // const workshopRef = collection(db, "user-workshop-details");
+
+  // function onAuthStateChanged(user: React.SetStateAction<UserType>) {
+  //   setUser(user);
+  // }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (curr_user) => {
+    auth().onAuthStateChanged((curr_user) => {
+      console.log(curr_user);
       if (curr_user) {
         setUser({
           email: curr_user.email,
@@ -82,11 +90,11 @@ export const AuthContextProvider = ({
       }
     });
     setLoading(false);
-
-    return () => unsubscribe();
+    console.log("context");
+    console.log(user);
   }, []);
 
-  const googleProvider = new GoogleAuthProvider();
+  //const googleProvider = new GoogleAuthProvider();
 
   const validUser = () => {
     if (user) {
@@ -117,12 +125,12 @@ export const AuthContextProvider = ({
     password: string
   ) => {
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const res = await auth().createUserWithEmailAndPassword(email, password);
 
       const user = res.user;
       const name = first_name + " " + last_name;
 
-      await setDoc(doc(userRef, user.uid), {
+      await firestore().collection("users").doc(user.uid).set({
         uid: user.uid,
         first_name: first_name,
         last_name: last_name,
@@ -133,20 +141,20 @@ export const AuthContextProvider = ({
         registered: {},
         added_time: serverTimestamp(),
       });
-      sendEmailVerification(user);
-      signOut(auth);
+      user.sendEmailVerification();
+      auth().signOut();
     } catch (err: any) {
       throw err;
     }
   };
 
   const logIn = async (email: string, password: string) => {
-    const res = await signInWithEmailAndPassword(auth, email, password);
+    const res = await auth().signInWithEmailAndPassword(email, password);
     const user = res.user;
 
     if (!user.emailVerified) {
       setUser({ uid: null, email: null });
-      signOut(auth);
+      auth().signOut();
       return false;
     }
 
@@ -154,25 +162,44 @@ export const AuthContextProvider = ({
   };
 
   const resetPassword = async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
+    await auth().sendPasswordResetEmail(email);
   };
 
   const logInWithGoogle = async () => {
     try {
-      const res = await signInWithPopup(auth, googleProvider);
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+
+      // Get user id token
+      const { idToken } = await GoogleSignin.signIn();
+
+      // Create a google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign in the user with the credential
+      const res = await auth().signInWithCredential(googleCredential);
+
+      //const res = await signInWithPopup(auth, googleProvider);
       const google_user = res.user;
+
       // const q = query(collection(db, "users"), where("uid", "==", user.uid));
       // const docs = await getDocs(q);
 
-      const docRef = doc(userRef, google_user.uid);
-      const docSnap = await getDoc(docRef);
+      // const docRef = doc(userRef, google_user.uid);
+      // const docSnap = await getDoc(docRef);
+      console.log(google_user.uid);
+      const docSnap = await firestore()
+        .collection("users")
+        .doc(google_user.uid)
+        .get();
 
       const [first_name, last_name] = getFirstAndLastNameFromGoogleName(
         google_user.displayName
       );
 
-      if (!docSnap.exists()) {
-        await setDoc(doc(userRef, google_user.uid), {
+      if (!docSnap) {
+        await firestore().collection("users").doc(google_user.uid).set({
           uid: google_user.uid,
           first_name: first_name,
           last_name: last_name,
@@ -190,65 +217,87 @@ export const AuthContextProvider = ({
     }
   };
 
-  const storeFirstAndLastName = async (
-    first_name: string,
-    last_name: string
-  ) => {
-    try {
-      const docRef = doc(userRef, user.uid ? user.uid : "");
+  // const storeFirstAndLastName = async (
+  //   first_name: string,
+  //   last_name: string
+  // ) => {
+  //   try {
+  //     const docRef = doc(userRef, user.uid ? user.uid : "");
 
-      await updateDoc(docRef, {
-        first_name: first_name,
-        last_name: last_name,
-      });
-      setUserInformation(user.uid);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
+  //     await updateDoc(docRef, {
+  //       first_name: first_name,
+  //       last_name: last_name,
+  //     });
+  //     setUserInformation(user.uid);
+  //   } catch (err: any) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const getFirstName = async () => {
-    const docRef = doc(userRef, user.uid ? user.uid : "0");
-    const docSnap = await getDoc(docRef);
+  // const getFirstName = async () => {
+  //   const docRef = doc(userRef, user.uid ? user.uid : "0");
+  //   const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
-      return null;
-    }
+  //   if (!docSnap.exists()) {
+  //     return null;
+  //   }
 
-    return docSnap.data().first_name;
-  };
+  //   return docSnap.data().first_name;
+  // };
 
-  const getRegisteredEvents = async () => {
-    const docRef = doc(userRef, user.uid ? user.uid : "0");
-    const docSnap = await getDoc(docRef);
+  // const getRegisteredEvents = async () => {
+  //   const docRef = doc(userRef, user.uid ? user.uid : "0");
+  //   const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
-      return null;
-    }
+  //   if (!docSnap.exists()) {
+  //     return null;
+  //   }
 
-    return docSnap.data().registered;
-  };
+  //   return docSnap.data().registered;
+  // };
 
   const setUserInformation = async (uid: string | null) => {
-    const docRef = doc(userRef, uid ? uid : "");
-    const docSnap = await getDoc(docRef);
+    // const docRef = doc(userRef, uid ? uid : "");
+    // const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
+    const docSnap = await firestore()
+      .collection("users")
+      .doc(uid ? uid : "")
+      .get();
+
+    if (!docSnap) {
+      return null;
+    }
+    console.log("Setting user info");
+    setUserInfo({
+      first_name: docSnap?.data()?.first_name,
+      last_name: docSnap?.data()?.last_name,
+      points: docSnap?.data()?.points,
+      registered: docSnap?.data()?.registered,
+      //user_type: docSnap.data().user_type,
+    });
+    console.log(userInfo);
+  };
+
+  const getPoints = async (uid: string | null) => {
+    if (!uid) {
+      return -5;
+    }
+    const docSnap = await firestore()
+      .collection("users")
+      .doc(uid ? uid : "")
+      .get();
+
+    if (!docSnap) {
       return null;
     }
 
-    setUserInfo({
-      first_name: docSnap.data().first_name,
-      last_name: docSnap.data().last_name,
-      points: docSnap.data().points,
-      registered: docSnap.data().registered,
-      //user_type: docSnap.data().user_type,
-    });
+    return docSnap?.data()?.points;
   };
 
   const logOut = async () => {
     setUser({ email: null, uid: null });
-    await signOut(auth);
+    await auth().signOut();
   };
 
   return (
@@ -261,11 +310,9 @@ export const AuthContextProvider = ({
         resetPassword,
         logInWithGoogle,
         logOut,
-        storeFirstAndLastName,
         validUser,
-        getFirstName,
-        getRegisteredEvents,
         setUserInformation,
+        getPoints,
       }}
     >
       {loading ? null : children}

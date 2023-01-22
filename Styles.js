@@ -5,10 +5,16 @@ const Styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#e3e3e3",
   },
+  container: {
+    backgroundColor: "#e3e3e3",
+  },
   login_header: {
     alignItems: "center",
     paddingTop: 20,
     paddingBottom: 10,
+    backgroundColor: "#e3e3e3",
+  },
+  home_header: {
     backgroundColor: "#e3e3e3",
   },
   login_header_logo: {
@@ -26,8 +32,6 @@ const Styles = StyleSheet.create({
     fontWeight: "bold",
   },
   login_wrapper: {
-    flex: 1,
-    justifyContent: "space-between",
     paddingVertical: 40,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,

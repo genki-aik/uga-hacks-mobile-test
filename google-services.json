@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "804445792649",
+    "project_id": "firebsae-next-auth",
+    "storage_bucket": "firebsae-next-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804445792649:android:abbba93a67673ab3059958",
+        "android_client_info": {
+          "package_name": "com.genki135.ugahacksmobileevent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804445792649-37hm452b2nh75ak0qan8qaoqaei18gdg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.genki135.ugahacksmobileevent",
+            "certificate_hash": "3defbddcb804aaf22f24f73adc4f10baa106b73a"
+          }
+        },
+        {
+          "client_id": "804445792649-3h299dceod906u7ah5juqan516j5mn7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.genki135.ugahacksmobileevent",
+            "certificate_hash": "6d1f20d8ca6afabbc1c86e2ad6e8a360355c7ebe"
+          }
+        },
+        {
+          "client_id": "804445792649-cj3r1i3kqv93omm9sfrh4be61d76h173.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkp6lkhvDh-p_--0YPT5nmDFgJ5ZLCES0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804445792649-cj3r1i3kqv93omm9sfrh4be61d76h173.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

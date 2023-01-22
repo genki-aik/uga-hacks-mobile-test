@@ -14,7 +14,7 @@ import Styles from "./Styles";
 import { useAuth } from "./context/AuthContext";
 
 export const UserLogIn: FC<{}> = ({}): ReactElement => {
-  const { logIn } = useAuth();
+  const { logIn, logInWithGoogle } = useAuth();
   const navigation = useNavigation();
 
   const [email, setEmail] = useState("");
@@ -23,10 +23,17 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
   const logInWithEmail = async () => {
     try {
       const success = await logIn(email, password);
-      navigation.navigate("Home" as never);
-      alert("LOG IN");
+      alert(success);
     } catch (e) {
       alert(e);
+    }
+  };
+
+  const googleLogin = async () => {
+    try {
+      await logInWithGoogle();
+    } catch (error: any) {
+      alert(error);
     }
   };
 
@@ -88,19 +95,7 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
             <View style={Styles.login_social_separator_line} />
           </View>
           <View style={Styles.login_social_buttons}>
-            {/* <TouchableOpacity>
-            <View
-              style={[
-                Styles.login_social_button,
-                Styles.login_social_facebook,
-              ]}>
-              <Image
-                style={Styles.login_social_icon}
-                source={require('./assets/icon-facebook.png')}
-              />
-            </View>
-          </TouchableOpacity> */}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={googleLogin}>
               <View style={Styles.login_social_button}>
                 <Image
                   style={Styles.login_social_icon}
@@ -108,14 +103,6 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
                 />
               </View>
             </TouchableOpacity>
-            {/* <TouchableOpacity>
-              <View style={Styles.login_social_button}>
-                <Image
-                  style={Styles.login_social_icon}
-                  source={require("./assets/icon-apple.png")}
-                />
-              </View>
-            </TouchableOpacity> */}
           </View>
         </View>
         <>

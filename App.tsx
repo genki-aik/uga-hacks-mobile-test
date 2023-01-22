@@ -5,7 +5,7 @@
  * @format
  */
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,7 +17,9 @@ import { UserLogIn } from "./UserLogIn";
 import { UserLogOut } from "./UserLogOut";
 import { HelloUser } from "./HelloUser";
 import Styles from "./Styles";
-import { AuthContextProvider } from "./context/AuthContext";
+import { useAuth, AuthContextProvider } from "./context/AuthContext";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 
 // // Your Parse initialization configuration goes here
 // Parse.setAsyncStorage(AsyncStorage);
@@ -48,7 +50,7 @@ function UserRegistrationScreen() {
 
 function UserLogInScreen() {
   return (
-    <AuthContextProvider>
+    <>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
@@ -57,7 +59,7 @@ function UserLogInScreen() {
         </View>
         <UserLogIn />
       </SafeAreaView>
-    </AuthContextProvider>
+    </>
   );
 }
 
@@ -87,16 +89,21 @@ function HomeScreen() {
     <AuthContextProvider>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
-        <View style={Styles.login_header}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Image
-            style={Styles.login_header_logo}
-            source={require("./assets/icon-google.png")}
+            style={{ width: 40, height: 40, marginTop: 10 }}
+            source={require("./assets/byte_mini.png")}
           />
-          <Text style={Styles.login_header_text}>
-            <Text style={Styles.login_header_text_bold}>
-              {"React Native on Back4App - "}
-            </Text>
-            {" Home"}
+          <Text style={{ color: "black", padding: 5, fontSize: 32 }}>
+            UGA Hacks 8
           </Text>
         </View>
         <HelloUser />
@@ -111,33 +118,55 @@ const Stack = createStackNavigator();
 
 // Add the stack navigator and inside it you can insert all your app screens, in the desired order
 const App = () => {
+  GoogleSignin.configure({
+    webClientId:
+      "804445792649-cj3r1i3kqv93omm9sfrh4be61d76h173.apps.googleusercontent.com",
+  });
+  const { user, userInfo } = useAuth();
+
+  //const user = auth().currentUser;
+  console.log("User");
+  console.log(user);
+
+  console.log(userInfo);
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#DC4141",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-            color: "white",
-          },
-        }}
-      >
-        <Stack.Screen
-          name="Login"
-          component={UserLogInScreen}
-          options={{ headerTitle: () => <LogoTitle /> }}
-        />
-        <Stack.Screen
-          name="Sign Up"
-          component={UserRegistrationScreen}
-          options={{ headerTitle: () => <LogoTitle /> }}
-        />
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#DC4141",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "white",
+            },
+          }}
+        >
+          {!user ? (
+            <>
+              <Stack.Screen
+                name="Login"
+                component={UserLogInScreen}
+                options={{ headerTitle: () => <LogoTitle /> }}
+              />
+              <Stack.Screen
+                name="Sign Up"
+                component={UserRegistrationScreen}
+                options={{ headerTitle: () => <LogoTitle /> }}
+              />
+            </>
+          ) : (
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerTitle: () => <LogoTitle /> }}
+            />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 };
 
