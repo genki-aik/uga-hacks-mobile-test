@@ -32,6 +32,7 @@ interface EventRegistered {
 }
 
 export interface UserInfoType {
+  uid: string | null;
   first_name: string | null;
   last_name: string | null;
   points: number | null;
@@ -50,6 +51,7 @@ export const AuthContextProvider = ({
 }) => {
   const [user, setUser] = useState<UserType>({ email: null, uid: null });
   const [userInfo, setUserInfo] = useState<UserInfoType>({
+    uid: null,
     first_name: null,
     last_name: null,
     points: null,
@@ -274,6 +276,7 @@ export const AuthContextProvider = ({
     console.log("Setting user info");
     console.log(docSnap?.data()?.points);
     setUserInfo({
+      uid: docSnap?.data()?.uid,
       first_name: docSnap?.data()?.first_name,
       last_name: docSnap?.data()?.last_name,
       points: docSnap?.data()?.points,
@@ -285,6 +288,7 @@ export const AuthContextProvider = ({
 
   const resetUserInformation = () => {
     setUserInfo({
+      uid: null,
       first_name: null,
       last_name: null,
       points: null,

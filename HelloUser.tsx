@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 //import Parse from 'parse/react-native';
 import Styles from "./Styles";
 import { useAuth } from "./context/AuthContext";
+import QRCode from "react-native-qrcode-svg";
 
 export const HelloUser: FC<{}> = ({}): ReactElement => {
   const { user, userInfo, getPoints } = useAuth();
@@ -59,6 +60,7 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
         {!loading ? (
           <Text style={{ fontSize: 36 }}>You have {points}</Text>
         ) : null}
+        {userInfo.uid ? <QRCode value={userInfo.uid} /> : null}
       </View>
     </>
   );
