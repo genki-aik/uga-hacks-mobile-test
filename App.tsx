@@ -5,7 +5,7 @@
  * @format
  */
 import "react-native-gesture-handler";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, SafeAreaView, StatusBar, Text, View } from "react-native";
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,9 +17,13 @@ import { UserLogIn } from "./UserLogIn";
 import { UserLogOut } from "./UserLogOut";
 import { HelloUser } from "./HelloUser";
 import Styles from "./Styles";
-import { useAuth, AuthContextProvider } from "./context/AuthContext";
+import {
+  useAuth,
+  AuthContextProvider,
+  AuthContext,
+} from "./context/AuthContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // // Your Parse initialization configuration goes here
 // Parse.setAsyncStorage(AsyncStorage);
@@ -86,7 +90,7 @@ function LogoTitle() {
 
 function HomeScreen() {
   return (
-    <AuthContextProvider>
+    <>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <View
@@ -109,7 +113,7 @@ function HomeScreen() {
         <HelloUser />
         <UserLogOut />
       </SafeAreaView>
-    </AuthContextProvider>
+    </>
   );
 }
 
@@ -122,13 +126,31 @@ const App = () => {
     webClientId:
       "804445792649-cj3r1i3kqv93omm9sfrh4be61d76h173.apps.googleusercontent.com",
   });
-  const { user, userInfo } = useAuth();
 
-  //const user = auth().currentUser;
-  console.log("User");
-  console.log(user);
+  // const { user } = useAuth();
 
-  console.log(userInfo);
+  // useEffect(() => {
+  //   console.log("USE effect");
+  //   console.log(user);
+  // }, [user]);
+
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
+  useEffect(() => {
+    auth().onAuthStateChanged((userState) => {
+      setUser(userState);
+
+      if (loading) {
+        setLoading(false);
+      }
+    });
+  }, []);
+
+  if (loading) {
+    return null;
+  }
+
   return (
     <AuthContextProvider>
       <NavigationContainer>

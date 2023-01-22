@@ -9,15 +9,29 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
   // State variable that will hold username value
   const [username, setUsername] = useState("");
   const [points, setPoints] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const curr_points = getPoints(user.uid);
+    const fetchData = async () => {
+      console.log("FETCH DATA)");
+      console.log(user.uid);
+      //console.log(userInfo.uid);
+      const user_points = await getPoints(user.uid);
+      if (user_points < 0) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+      setPoints(user_points);
+    };
     console.log("LOGGING");
+    fetchData();
+
     console.log(user);
     console.log(userInfo);
-    console.log(curr_points);
-    setPoints(curr_points);
-  }, []);
+  }, [user, userInfo]);
+  console.log("OUTSIDE");
+  console.log(userInfo);
 
   // useEffect is called after the component is initially rendered and
   // after every other render
@@ -42,7 +56,9 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
   return (
     <>
       <View style={{ flex: 3, alignItems: "center" }}>
-        <Text style={{ fontSize: 36 }}>You have {points}</Text>
+        {!loading ? (
+          <Text style={{ fontSize: 36 }}>You have {points}</Text>
+        ) : null}
       </View>
     </>
   );

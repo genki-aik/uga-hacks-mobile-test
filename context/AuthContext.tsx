@@ -34,8 +34,8 @@ interface EventRegistered {
 export interface UserInfoType {
   first_name: string | null;
   last_name: string | null;
-  points: number;
-  registered: EventRegistered;
+  points: number | null;
+  registered: EventRegistered | null;
   //user_type: Users | null;
 }
 
@@ -52,10 +52,8 @@ export const AuthContextProvider = ({
   const [userInfo, setUserInfo] = useState<UserInfoType>({
     first_name: null,
     last_name: null,
-    points: 0,
-    registered: {
-      HACKS8: null,
-    },
+    points: null,
+    registered: null,
     //user_type: null
   });
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,7 +75,7 @@ export const AuthContextProvider = ({
   // }
 
   useEffect(() => {
-    auth().onAuthStateChanged((curr_user) => {
+    const unsubscribe = auth().onAuthStateChanged((curr_user) => {
       console.log(curr_user);
       if (curr_user) {
         setUser({
@@ -87,11 +85,14 @@ export const AuthContextProvider = ({
         setUserInformation(curr_user.uid);
       } else {
         setUser({ email: null, uid: null });
+        resetUserInformation();
       }
     });
     setLoading(false);
     console.log("context");
     console.log(user);
+
+    return () => unsubscribe();
   }, []);
 
   //const googleProvider = new GoogleAuthProvider();
@@ -154,6 +155,7 @@ export const AuthContextProvider = ({
 
     if (!user.emailVerified) {
       setUser({ uid: null, email: null });
+      resetUserInformation();
       auth().signOut();
       return false;
     }
@@ -259,16 +261,18 @@ export const AuthContextProvider = ({
   const setUserInformation = async (uid: string | null) => {
     // const docRef = doc(userRef, uid ? uid : "");
     // const docSnap = await getDoc(docRef);
-
+    console.log("SETTING USER INFORMATION");
+    console.log(uid);
     const docSnap = await firestore()
       .collection("users")
       .doc(uid ? uid : "")
       .get();
-
+    console.log(docSnap);
     if (!docSnap) {
       return null;
     }
     console.log("Setting user info");
+    console.log(docSnap?.data()?.points);
     setUserInfo({
       first_name: docSnap?.data()?.first_name,
       last_name: docSnap?.data()?.last_name,
@@ -279,7 +283,19 @@ export const AuthContextProvider = ({
     console.log(userInfo);
   };
 
+  const resetUserInformation = () => {
+    setUserInfo({
+      first_name: null,
+      last_name: null,
+      points: null,
+      registered: null,
+    });
+  };
+
   const getPoints = async (uid: string | null) => {
+    console.log("Get points");
+    console.log(uid);
+
     if (!uid) {
       return -5;
     }
@@ -288,9 +304,12 @@ export const AuthContextProvider = ({
       .doc(uid ? uid : "")
       .get();
 
+    console.log("Retreieved data");
+    console.log(docSnap);
     if (!docSnap) {
       return null;
     }
+    console.log(docSnap?.data()?.points);
 
     return docSnap?.data()?.points;
   };
