@@ -13,6 +13,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -114,25 +115,31 @@ function HomeScreen() {
     <>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            style={{ width: 40, height: 40, marginTop: 10 }}
-            source={require("./assets/byte_mini.png")}
-          />
-          <Text style={{ color: "white", padding: 5, fontSize: 32 }}>
-            UGA Hacks 8
-          </Text>
-        </View>
-        <HelloUser />
-        <UserLogOut />
+        <ScrollView>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 20,
+            }}
+          >
+            <Image
+              style={{ width: 40, height: 40, marginTop: 10 }}
+              source={require("./assets/byte_mini.png")}
+            />
+            <Text style={{ color: "white", padding: 5, fontSize: 36 }}>
+              UGA Hacks 8
+            </Text>
+            <Text style={{ color: "white", padding: 5, fontSize: 18 }}>
+              Create your own adventure!
+            </Text>
+          </View>
+          <HelloUser />
+          <UserLogOut />
+        </ScrollView>
       </SafeAreaView>
     </>
   );

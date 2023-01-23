@@ -27,6 +27,29 @@ export interface Event {
   description: string;
 }
 
+function eventTagColor(tag: EventTag) {
+  switch (tag) {
+    case EventTag.CEREMONY:
+      return "#FFA500"; // Orange
+    case EventTag.COMPANY_EVENT:
+      return "#FF00FF"; // Magenta
+    case EventTag.FOOD:
+      return "#00FFFF"; // Cyan
+    case EventTag.GAME:
+      return "#FFFF00"; // Yellow
+    case EventTag.IMPORTANT:
+      return "#DC4141"; // UGA Red
+    case EventTag.SIDE_EVENT:
+      return "#00FF00"; // Lime
+    case EventTag.SUBMISSION_EXPO:
+      return "#7FFFD4"; // Aquamarine
+    case EventTag.WORKSHOP:
+      return "#FF0000"; // Red
+    default:
+      return "white";
+  }
+}
+
 // const fridaySchedule = new Map<string, Event[]>([
 //   [
 //     "5:00 PM",
@@ -49,17 +72,17 @@ function FridaySchedule() {
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <ScrollView>
-          {fridaySchedule.map((events) => {
+          {fridaySchedule.map((events, index) => {
             return (
-              <View>
+              <View key={index}>
                 <View>
                   <Text style={{ padding: 5, fontSize: 20, color: "white" }}>
                     {events.start}
                   </Text>
                 </View>
-                {events.eventList.map((event) => {
+                {events.eventList.map((event, index) => {
                   return (
-                    <View>
+                    <View key={index}>
                       <Card
                         style={{
                           marginLeft: 15,
@@ -78,7 +101,9 @@ function FridaySchedule() {
                         <Text style={{ color: "#818181", fontSize: 16 }}>
                           {event.startTime} - {event.endTime}
                         </Text>
-                        <Text>{event.tag}</Text>
+                        <Text style={{ color: eventTagColor(event.tag) }}>
+                          {event.tag}
+                        </Text>
                       </Card>
                     </View>
                   );
