@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const Styles = StyleSheet.create({
   login_container: {
     flex: 1,
-    backgroundColor: "#252526",
+    backgroundColor: "#161618",
   },
   container: {
     backgroundColor: "#e3e3e3",
@@ -36,7 +36,7 @@ const Styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     marginTop: -10,
-    backgroundColor: "#252526",
+    backgroundColor: "#161618",
     alignItems: "center",
   },
   form: {
@@ -93,7 +93,7 @@ const Styles = StyleSheet.create({
     height: 60,
     marginHorizontal: 12,
     borderWidth: 1,
-    borderColor: "#e3e3e3",
+    borderColor: "#7f7f7f",
     borderRadius: 60,
   },
   login_social_icon: {

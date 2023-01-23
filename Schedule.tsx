@@ -52,13 +52,8 @@ function FridaySchedule() {
           {fridaySchedule.map((events) => {
             return (
               <View>
-                <View
-                  style={{
-                    width: 150,
-                    backgroundColor: "#818181",
-                  }}
-                >
-                  <Text style={{ padding: 10, fontSize: 20, color: "white" }}>
+                <View>
+                  <Text style={{ padding: 5, fontSize: 20, color: "white" }}>
                     {events.start}
                   </Text>
                 </View>
@@ -67,16 +62,20 @@ function FridaySchedule() {
                     <View>
                       <Card
                         style={{
-                          margin: 15,
+                          marginLeft: 15,
+                          marginBottom: 15,
+                          marginRight: 15,
                           padding: 10,
-                          backgroundColor: "#818181",
+                          backgroundColor: "#212124",
                         }}
                       >
                         <Text style={{ color: "white", fontSize: 18 }}>
                           {event.name}
                         </Text>
-                        <Text>{event.location}</Text>
-                        <Text>
+                        <Text style={{ color: "#818181", fontSize: 16 }}>
+                          {event.location}
+                        </Text>
+                        <Text style={{ color: "#818181", fontSize: 16 }}>
                           {event.startTime} - {event.endTime}
                         </Text>
                         <Text>{event.tag}</Text>
