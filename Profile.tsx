@@ -12,6 +12,8 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  const hacks8Logo = require("./assets/byte_mini.png");
+
   useEffect(() => {
     const fetchData = async () => {
       console.log("FETCH DATA)");
@@ -58,9 +60,23 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
     <>
       <View style={{ flex: 3, alignItems: "center" }}>
         {!loading ? (
-          <Text style={{ fontSize: 36 }}>You have {points}</Text>
+          <Text style={{ fontSize: 36, color: "white" }}>
+            You have {points} points!
+          </Text>
         ) : null}
-        {userInfo.uid ? <QRCode value={userInfo.uid} /> : null}
+        {userInfo.uid ? (
+          <View style={{ alignItems: "center", marginTop: 10 }}>
+            <Text style={{ marginBottom: 15, fontSize: 18, color: "white" }}>
+              Use this QR code to check-in to events! 🐶
+            </Text>
+            <QRCode
+              size={200}
+              value={userInfo.uid}
+              logo={hacks8Logo}
+              logoBackgroundColor="black"
+            />
+          </View>
+        ) : null}
       </View>
     </>
   );

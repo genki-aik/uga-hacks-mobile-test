@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const Styles = StyleSheet.create({
   login_container: {
     flex: 1,
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#252526",
   },
   container: {
     backgroundColor: "#e3e3e3",
@@ -12,10 +12,10 @@ const Styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 20,
     paddingBottom: 10,
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#252526",
   },
   home_header: {
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#252526",
   },
   login_header_logo: {
     width: 220,
@@ -36,7 +36,7 @@ const Styles = StyleSheet.create({
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     marginTop: -10,
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#252526",
     alignItems: "center",
   },
   form: {
@@ -74,11 +74,11 @@ const Styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: 1,
-    backgroundColor: "black",
+    backgroundColor: "#7f7f7f",
   },
   login_social_separator_text: {
     marginHorizontal: 10,
-    color: "#808080",
+    color: "#7f7f7f",
     fontSize: 16,
   },
   login_social_buttons: {
@@ -93,7 +93,7 @@ const Styles = StyleSheet.create({
     height: 60,
     marginHorizontal: 12,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#e3e3e3",
     borderRadius: 60,
   },
   login_social_icon: {

@@ -23,7 +23,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { UserRegistration } from "./UserRegistration";
 import { UserLogIn } from "./UserLogIn";
 import { UserLogOut } from "./UserLogOut";
-import { HelloUser } from "./HelloUser";
+import { HelloUser } from "./Profile";
 import Styles from "./Styles";
 import {
   useAuth,
@@ -127,7 +127,7 @@ function HomeScreen() {
             style={{ width: 40, height: 40, marginTop: 10 }}
             source={require("./assets/byte_mini.png")}
           />
-          <Text style={{ color: "black", padding: 5, fontSize: 32 }}>
+          <Text style={{ color: "white", padding: 5, fontSize: 32 }}>
             UGA Hacks 8
           </Text>
         </View>
