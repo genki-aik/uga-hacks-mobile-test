@@ -202,7 +202,7 @@ export const AuthContextProvider = ({
         google_user.displayName
       );
 
-      if (!docSnap) {
+      if (!docSnap.exists) {
         await firestore().collection("users").doc(google_user.uid).set({
           uid: google_user.uid,
           first_name: first_name,
@@ -270,17 +270,16 @@ export const AuthContextProvider = ({
       .doc(uid ? uid : "")
       .get();
     console.log(docSnap);
-    if (!docSnap) {
+    if (!docSnap.exists) {
       return null;
     }
-    console.log("Setting user info");
-    console.log(docSnap?.data()?.points);
+
     setUserInfo({
-      uid: docSnap?.data()?.uid,
-      first_name: docSnap?.data()?.first_name,
-      last_name: docSnap?.data()?.last_name,
-      points: docSnap?.data()?.points,
-      registered: docSnap?.data()?.registered,
+      uid: docSnap.data()?.uid,
+      first_name: docSnap.data()?.first_name,
+      last_name: docSnap.data()?.last_name,
+      points: docSnap.data()?.points,
+      registered: docSnap.data()?.registered,
       //user_type: docSnap.data().user_type,
     });
     console.log(userInfo);
@@ -301,7 +300,7 @@ export const AuthContextProvider = ({
     console.log(uid);
 
     if (!uid) {
-      return -5;
+      return -1;
     }
     const docSnap = await firestore()
       .collection("users")
@@ -310,16 +309,16 @@ export const AuthContextProvider = ({
 
     console.log("Retreieved data");
     console.log(docSnap);
-    if (!docSnap) {
+    if (!docSnap.exists) {
       return null;
     }
-    console.log(docSnap?.data()?.points);
 
-    return docSnap?.data()?.points;
+    return docSnap.data()?.points;
   };
 
   const logOut = async () => {
     setUser({ email: null, uid: null });
+    resetUserInformation();
     await auth().signOut();
   };
 

@@ -1,4 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { Text, View } from "react-native";
 //import Parse from 'parse/react-native';
 import Styles from "./Styles";
@@ -13,6 +14,7 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
   const [loading, setLoading] = useState(false);
 
   const hacks8Logo = require("./assets/byte_mini.png");
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,11 +30,12 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
       setPoints(user_points);
     };
     console.log("LOGGING");
+    console.log(isFocused);
     fetchData();
 
     console.log(user);
     console.log(userInfo);
-  }, [user, userInfo]);
+  }, [isFocused]);
   console.log("OUTSIDE");
   console.log(userInfo);
 

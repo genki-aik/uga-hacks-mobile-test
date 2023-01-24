@@ -18,6 +18,12 @@ export interface Event {
   description: string;
 }
 
+export interface ScheduleList {
+  start: string;
+  eventList: Event[];
+}
+
+//
 export const fridaySchedule = [
   {
     start: "5:00 PM",

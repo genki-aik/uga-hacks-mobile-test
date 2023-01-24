@@ -92,8 +92,8 @@ function LogoTitle() {
         style={{ width: 30, height: 30 }}
         source={require("./assets/UGAHacks_General_Byte.png")}
       />
-      <Text style={{ color: "white", padding: 5, fontSize: 22 }}>
-        UGA Hacks ByteMobile
+      <Text style={{ color: "white", marginTop: 15, padding: 5, fontSize: 22 }}>
+        UGAHacks ByteMobile
       </Text>
     </View>
   );
@@ -131,7 +131,7 @@ function HomeScreen() {
               source={require("./assets/byte_mini.png")}
             />
             <Text style={{ color: "white", padding: 5, fontSize: 36 }}>
-              UGA Hacks 8
+              UGAHacks 8
             </Text>
             <Text style={{ color: "white", padding: 5, fontSize: 18 }}>
               Create your own adventure!

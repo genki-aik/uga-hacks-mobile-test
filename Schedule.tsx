@@ -1,10 +1,9 @@
-import React from "react";
+import React, { ReactFragment } from "react";
 import { View, Text, StatusBar, SafeAreaView, ScrollView } from "react-native";
-import CalendarBlock from "./components/CalendarBlock";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // @ts-ignore
 import { Card } from "react-native-shadow-cards";
-import { fridaySchedule } from "./hacks8Schedule";
+import { fridaySchedule, ScheduleList } from "./hacks8Schedule";
 import Styles from "./Styles";
 
 export enum EventTag {
