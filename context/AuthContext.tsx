@@ -78,7 +78,6 @@ export const AuthContextProvider = ({
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((curr_user) => {
-      console.log(curr_user);
       if (curr_user) {
         setUser({
           email: curr_user.email,
@@ -91,8 +90,6 @@ export const AuthContextProvider = ({
       }
     });
     setLoading(false);
-    console.log("context");
-    console.log(user);
 
     return () => unsubscribe();
   }, []);
@@ -184,15 +181,8 @@ export const AuthContextProvider = ({
       // Sign in the user with the credential
       const res = await auth().signInWithCredential(googleCredential);
 
-      //const res = await signInWithPopup(auth, googleProvider);
       const google_user = res.user;
 
-      // const q = query(collection(db, "users"), where("uid", "==", user.uid));
-      // const docs = await getDocs(q);
-
-      // const docRef = doc(userRef, google_user.uid);
-      // const docSnap = await getDoc(docRef);
-      console.log(google_user.uid);
       const docSnap = await firestore()
         .collection("users")
         .doc(google_user.uid)
@@ -261,15 +251,11 @@ export const AuthContextProvider = ({
   // };
 
   const setUserInformation = async (uid: string | null) => {
-    // const docRef = doc(userRef, uid ? uid : "");
-    // const docSnap = await getDoc(docRef);
-    console.log("SETTING USER INFORMATION");
-    console.log(uid);
     const docSnap = await firestore()
       .collection("users")
       .doc(uid ? uid : "")
       .get();
-    console.log(docSnap);
+
     if (!docSnap.exists) {
       return null;
     }
@@ -282,7 +268,6 @@ export const AuthContextProvider = ({
       registered: docSnap.data()?.registered,
       //user_type: docSnap.data().user_type,
     });
-    console.log(userInfo);
   };
 
   const resetUserInformation = () => {
@@ -296,9 +281,6 @@ export const AuthContextProvider = ({
   };
 
   const getPoints = async (uid: string | null) => {
-    console.log("Get points");
-    console.log(uid);
-
     if (!uid) {
       return -1;
     }
@@ -307,8 +289,6 @@ export const AuthContextProvider = ({
       .doc(uid ? uid : "")
       .get();
 
-    console.log("Retreieved data");
-    console.log(docSnap);
     if (!docSnap.exists) {
       return null;
     }

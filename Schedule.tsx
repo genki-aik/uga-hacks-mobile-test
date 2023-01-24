@@ -1,21 +1,11 @@
-import React, { ReactFragment } from "react";
+import React from "react";
 import { View, Text, StatusBar, SafeAreaView, ScrollView } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // @ts-ignore
 import { Card } from "react-native-shadow-cards";
-import { fridaySchedule, ScheduleList } from "./hacks8Schedule";
+import { fridaySchedule } from "./hacks8FridaySchedule";
 import Styles from "./Styles";
-
-export enum EventTag {
-  IMPORTANT = "important",
-  WORKSHOP = "workshop",
-  SIDE_EVENT = "side event",
-  GAME = "game",
-  FOOD = "food",
-  COMPANY_EVENT = "company event",
-  SUBMISSION_EXPO = "submission expo",
-  CEREMONY = "ceremony",
-}
+import { EventTag } from "./hacks8FridaySchedule";
 
 export interface Event {
   name: string;
@@ -49,29 +39,15 @@ function eventTagColor(tag: EventTag) {
   }
 }
 
-// const fridaySchedule = new Map<string, Event[]>([
-//   [
-//     "5:00 PM",
-//     [
-//       {
-//         name: "Check-In",
-//         startTime: "5:00 PM",
-//         endTime: "6:30 PM",
-//         tag: EventTag.IMPORTANT,
-//         location: "MLC",
-//         description: "Check in to UGA Hacks 8",
-//       },
-//     ],
-//   ],
-// ]);
-
-function FridaySchedule() {
+function ScheduleBuilder(props: {
+  schedule: { start: string; eventList: Event[] }[];
+}) {
   return (
     <>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
         <ScrollView>
-          {fridaySchedule.map((events, index) => {
+          {props.schedule.map((events, index) => {
             return (
               <View key={index}>
                 <View>
@@ -89,6 +65,7 @@ function FridaySchedule() {
                           marginRight: 15,
                           padding: 10,
                           backgroundColor: "#212124",
+                          cornerRadius: 20,
                         }}
                       >
                         <Text style={{ color: "white", fontSize: 18 }}>
@@ -116,32 +93,6 @@ function FridaySchedule() {
   );
 }
 
-function SaturdaySchedule() {
-  return (
-    <>
-      <StatusBar />
-      <SafeAreaView style={Styles.login_container}>
-        <View>
-          <Text>Saturday</Text>
-        </View>
-      </SafeAreaView>
-    </>
-  );
-}
-
-function SundaySchedule() {
-  return (
-    <>
-      <StatusBar />
-      <SafeAreaView style={Styles.login_container}>
-        <View>
-          <Text>Sunday</Text>
-        </View>
-      </SafeAreaView>
-    </>
-  );
-}
-
 export default function ScheduleScreen() {
   const Tab = createMaterialTopTabNavigator();
 
@@ -155,9 +106,15 @@ export default function ScheduleScreen() {
         tabBarInactiveTintColor: "white",
       }}
     >
-      <Tab.Screen name="Friday" component={FridaySchedule} />
-      <Tab.Screen name="Saturday" component={SaturdaySchedule} />
-      <Tab.Screen name="Sunday" component={SundaySchedule} />
+      <Tab.Screen name="Friday">
+        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+      </Tab.Screen>
+      <Tab.Screen name="Saturday">
+        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+      </Tab.Screen>
+      <Tab.Screen name="Sunday">
+        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }

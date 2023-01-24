@@ -5,7 +5,7 @@
  * @format
  */
 import "react-native-gesture-handler";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -26,11 +26,7 @@ import { UserLogIn } from "./UserLogIn";
 import { UserLogOut } from "./UserLogOut";
 import { HelloUser } from "./Profile";
 import Styles from "./Styles";
-import {
-  useAuth,
-  AuthContextProvider,
-  AuthContext,
-} from "./context/AuthContext";
+import { AuthContextProvider } from "./context/AuthContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import Schedule from "./Schedule";
@@ -99,17 +95,6 @@ function LogoTitle() {
   );
 }
 
-function ProfileFooter() {
-  return (
-    <TouchableOpacity>
-      <Image
-        style={{ width: 15, height: 15 }}
-        source={require("./assets/byte_mini.png")}
-      />
-    </TouchableOpacity>
-  );
-}
-
 function HomeScreen() {
   return (
     <>
@@ -123,7 +108,6 @@ function HomeScreen() {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              marginBottom: 20,
             }}
           >
             <Image
@@ -133,10 +117,18 @@ function HomeScreen() {
             <Text style={{ color: "white", padding: 5, fontSize: 36 }}>
               UGAHacks 8
             </Text>
-            <Text style={{ color: "white", padding: 5, fontSize: 18 }}>
-              Create your own adventure!
-            </Text>
           </View>
+          <Text
+            style={{
+              color: "white",
+              padding: 5,
+              fontSize: 18,
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            Create your own adventure!
+          </Text>
           <HelloUser />
           <UserLogOut />
         </ScrollView>
@@ -155,12 +147,6 @@ const App = () => {
       "804445792649-cj3r1i3kqv93omm9sfrh4be61d76h173.apps.googleusercontent.com",
   });
 
-  // const { user } = useAuth();
-
-  // useEffect(() => {
-  //   console.log("USE effect");
-  //   console.log(user);
-  // }, [user]);
   const Tab = createBottomTabNavigator();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);

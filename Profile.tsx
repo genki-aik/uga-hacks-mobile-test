@@ -18,9 +18,6 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("FETCH DATA)");
-      console.log(user.uid);
-      //console.log(userInfo.uid);
       const user_points = await getPoints(user.uid);
       if (user_points < 0) {
         setLoading(true);
@@ -29,36 +26,10 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
       }
       setPoints(user_points);
     };
-    console.log("LOGGING");
-    console.log(isFocused);
+
     fetchData();
-
-    console.log(user);
-    console.log(userInfo);
   }, [isFocused]);
-  console.log("OUTSIDE");
-  console.log(userInfo);
 
-  // useEffect is called after the component is initially rendered and
-  // after every other render
-  //   useEffect(() => {
-  //     // Since the async method Parse.User.currentAsync is needed to
-  //     // retrieve the current user data, you need to declare an async
-  //     // function here and call it afterwards
-  //     async function getCurrentUser() {
-  //       // This condition ensures that username is updated only if needed
-  //       if (username === '') {
-  //         const currentUser = await Parse.User.currentAsync();
-  //         if (currentUser !== null) {
-  //           setUsername(currentUser.getUsername());
-  //         }
-  //       }
-  //     }
-  //     getCurrentUser();
-  //   }, [username]);
-
-  // Note the conditional operator here, so the "Hello" text is only
-  // rendered if there is an username value
   return (
     <>
       <View style={{ flex: 3, alignItems: "center" }}>

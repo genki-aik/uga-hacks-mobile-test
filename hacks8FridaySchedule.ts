@@ -9,21 +9,6 @@ export enum EventTag {
   CEREMONY = "ceremony",
 }
 
-export interface Event {
-  name: string;
-  startTime: string;
-  endTime: string;
-  tag: EventTag;
-  location: string;
-  description: string;
-}
-
-export interface ScheduleList {
-  start: string;
-  eventList: Event[];
-}
-
-//
 export const fridaySchedule = [
   {
     start: "5:00 PM",
