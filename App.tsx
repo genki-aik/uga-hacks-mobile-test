@@ -31,6 +31,8 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import Schedule from "./Schedule";
 import ScavengerHunt from "./ScavengerHunt";
+import ClueQuestion from "./ClueQuestion";
+import ScavengerHuntEnter from "./ScavengerHuntEnter";
 
 // // Your Parse initialization configuration goes here
 // Parse.setAsyncStorage(AsyncStorage);
@@ -74,7 +76,7 @@ function UserLogInScreen() {
   );
 }
 
-function LogoTitle() {
+export function LogoTitle() {
   return (
     <View
       style={{
@@ -168,7 +170,7 @@ const App = () => {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        {!user ? (
+        {user ? (
           <Stack.Navigator
             screenOptions={{
               headerStyle: {
@@ -181,72 +183,78 @@ const App = () => {
               },
             }}
           >
-            <Stack.Screen
-              name="Login"
-              component={UserLogInScreen}
-              options={{ headerTitle: () => <LogoTitle /> }}
-            />
-            <Stack.Screen
-              name="Sign Up"
-              component={UserRegistrationScreen}
-              options={{ headerTitle: () => <LogoTitle /> }}
-            />
+            <Stack.Group>
+              <Stack.Screen
+                name="Login"
+                component={UserLogInScreen}
+                options={{ headerTitle: () => <LogoTitle /> }}
+              />
+              <Stack.Screen
+                name="Sign Up"
+                component={UserRegistrationScreen}
+                options={{ headerTitle: () => <LogoTitle /> }}
+              />
+            </Stack.Group>
           </Stack.Navigator>
         ) : (
-          <Tab.Navigator
-            screenOptions={{
-              tabBarStyle: {
-                backgroundColor: "black",
-              },
-              tabBarActiveTintColor: "white",
-              tabBarInactiveTintColor: "white",
-              tabBarActiveBackgroundColor: "#DC4141",
-              headerStyle: {
-                backgroundColor: "#DC4141",
-              },
-              headerTintColor: "black",
-              headerTitleStyle: {
-                fontWeight: "bold",
-                color: "white",
-              },
-            }}
-          >
-            <Tab.Screen
-              name="Profile"
-              component={HomeScreen}
-              options={{
-                headerTitle: () => <LogoTitle />,
-                tabBarIcon: ({}) => {
-                  return (
-                    <Image
-                      style={{ width: 25, height: 25 }}
-                      source={require("./assets/byte_mini.png")}
-                    />
-                  );
+          <>
+            <Tab.Navigator
+              screenOptions={{
+                tabBarStyle: {
+                  backgroundColor: "black",
+                },
+                tabBarActiveTintColor: "white",
+                tabBarInactiveTintColor: "white",
+                tabBarActiveBackgroundColor: "#DC4141",
+                headerStyle: {
+                  backgroundColor: "#DC4141",
+                },
+                headerTintColor: "black",
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  color: "white",
                 },
               }}
-            />
-            <Tab.Screen
-              name="Schedule"
-              component={Schedule}
-              options={{
-                headerTitle: () => <LogoTitle />,
-                tabBarIcon: ({}) => {
-                  return <Icon name="calendar" size={25} color="white" />;
-                },
-              }}
-            />
-            <Tab.Screen
-              name="Scavenger Hunt"
-              component={ScavengerHunt}
-              options={{
-                headerTitle: () => <LogoTitle />,
-                tabBarIcon: ({}) => {
-                  return <Icon name="search" size={25} color="white" />;
-                },
-              }}
-            />
-          </Tab.Navigator>
+            >
+              <Tab.Group>
+                <Tab.Screen
+                  name="Profile"
+                  component={HomeScreen}
+                  options={{
+                    headerTitle: () => <LogoTitle />,
+                    tabBarIcon: ({}) => {
+                      return (
+                        <Image
+                          style={{ width: 25, height: 25 }}
+                          source={require("./assets/byte_mini.png")}
+                        />
+                      );
+                    },
+                  }}
+                />
+                <Tab.Screen
+                  name="Schedule"
+                  component={Schedule}
+                  options={{
+                    headerTitle: () => <LogoTitle />,
+                    tabBarIcon: ({}) => {
+                      return <Icon name="calendar" size={25} color="white" />;
+                    },
+                  }}
+                />
+                <Tab.Screen
+                  name="Scavenger Hunt"
+                  component={ScavengerHuntEnter}
+                  options={{
+                    headerTitle: () => <LogoTitle />,
+                    tabBarIcon: ({}) => {
+                      return <Icon name="search" size={25} color="white" />;
+                    },
+                  }}
+                />
+              </Tab.Group>
+            </Tab.Navigator>
+          </>
         )}
       </NavigationContainer>
     </AuthContextProvider>

@@ -50,6 +50,15 @@ const Styles = StyleSheet.create({
     backgroundColor: "#EDF0F7",
     borderRadius: 50,
   },
+  clue_submit_button: {
+    height: 44,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: "#EDF0F7",
+    borderRadius: 50,
+    marginLeft: 20,
+    marginRight: 20,
+  },
   button: {
     alignItems: "center",
     justifyContent: "center",
