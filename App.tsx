@@ -29,6 +29,7 @@ import Styles from "./Styles";
 import { AuthContextProvider } from "./context/AuthContext";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import FlashMessage from "react-native-flash-message";
 import Schedule from "./Schedule";
 import ScavengerHunt from "./ScavengerHunt";
 import ClueQuestion from "./ClueQuestion";
@@ -256,6 +257,7 @@ const App = () => {
             </Tab.Navigator>
           </>
         )}
+        <FlashMessage position="top" />
       </NavigationContainer>
     </AuthContextProvider>
   );

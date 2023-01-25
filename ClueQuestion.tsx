@@ -8,10 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { RouteProp } from "@react-navigation/native";
 import Styles from "./Styles";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import { StackScreenProps } from "@react-navigation/stack";
+import { showMessage } from "react-native-flash-message";
 
 type Props = StackScreenProps<RootStackParamList, "Clue">;
 
@@ -21,10 +21,24 @@ export default function ClueQuestion({ route, navigation }: Props) {
 
   const onPress = function onPress() {
     if (userInput === answer) {
+      showMessage({
+        message: "Correct!",
+        type: "success",
+        color: "white",
+        titleStyle: { textAlign: "center", fontSize: 19 },
+      });
       navigation.navigate("Question", {
         question: "What is the first high-level programming language?",
         answer: "FORTRAN",
       });
+    } else {
+      showMessage({
+        message: "Incorrect Answer!",
+        type: "warning",
+        color: "black",
+        titleStyle: { textAlign: "center", fontSize: 19 },
+      });
+      setUserInput("");
     }
   };
   return (

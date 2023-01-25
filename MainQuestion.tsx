@@ -11,6 +11,7 @@ import {
 import Styles from "./Styles";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import { StackScreenProps } from "@react-navigation/stack";
+import { showMessage } from "react-native-flash-message";
 
 type Props = StackScreenProps<RootStackParamList, "Question">;
 
@@ -20,7 +21,20 @@ export default function MainQuestion({ route, navigation }: Props) {
 
   const onPress = function onPress() {
     if (userInput === answer) {
+      showMessage({
+        message: "Correct!",
+        type: "success",
+        color: "white",
+        titleStyle: { textAlign: "center", fontSize: 19 },
+      });
       navigation.navigate("Scavenger_Hunt");
+    } else {
+      showMessage({
+        message: "Incorrect Answer!",
+        type: "warning",
+        color: "black",
+        titleStyle: { textAlign: "center", fontSize: 19 },
+      });
     }
   };
   return (

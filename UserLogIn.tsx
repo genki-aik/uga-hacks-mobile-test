@@ -24,8 +24,8 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
     try {
       const success = await logIn(email, password);
       alert(success);
-    } catch (e) {
-      alert(e);
+    } catch (error: any) {
+      alert(error);
     }
   };
 
