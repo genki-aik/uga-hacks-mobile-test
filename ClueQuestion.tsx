@@ -17,10 +17,10 @@ type Props = StackScreenProps<RootStackParamList, "Clue">;
 
 export default function ClueQuestion({ route, navigation }: Props) {
   const [userInput, setUserInput] = useState("");
-  const { question, answer } = route.params;
+  const { clue, clueAnswer, nextQuestion, nextAnswer } = route.params;
 
   const onPress = function onPress() {
-    if (userInput === answer) {
+    if (userInput === clueAnswer) {
       showMessage({
         message: "Correct!",
         type: "success",
@@ -28,8 +28,8 @@ export default function ClueQuestion({ route, navigation }: Props) {
         titleStyle: { textAlign: "center", fontSize: 19 },
       });
       navigation.navigate("Question", {
-        question: "What is the first high-level programming language?",
-        answer: "FORTRAN",
+        question: nextQuestion,
+        answer: nextAnswer,
       });
     } else {
       showMessage({
@@ -60,7 +60,7 @@ export default function ClueQuestion({ route, navigation }: Props) {
               textAlign: "center",
             }}
           >
-            {question}
+            {clue}
           </Text>
           <TextInput
             style={Styles.clue_submit_button}

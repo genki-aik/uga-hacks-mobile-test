@@ -1,12 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { useAuth } from "./context/AuthContext";
 import ClueQuestion from "./ClueQuestion";
 import ScavengerHunt from "./ScavengerHunt";
 import MainQuestion from "./MainQuestion";
 
 export type RootStackParamList = {
   Scavenger_Hunt: undefined;
-  Clue: { question: string; answer: string };
+  Clue: {
+    clue: string;
+    clueAnswer: string;
+    nextQuestion: string;
+    nextAnswer: string;
+  };
   Question: { question: string; answer: string };
 };
 

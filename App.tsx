@@ -171,7 +171,7 @@ const App = () => {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        {user ? (
+        {!user ? (
           <Stack.Navigator
             screenOptions={{
               headerStyle: {
