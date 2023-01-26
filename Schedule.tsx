@@ -1,5 +1,14 @@
-import React from "react";
-import { View, Text, StatusBar, SafeAreaView, ScrollView } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StatusBar,
+  SafeAreaView,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // @ts-ignore
 import { Card } from "react-native-shadow-cards";
@@ -8,6 +17,7 @@ import { saturdaySchedule } from "./hacks8SaturdaySchedule";
 import { sundaySchedule } from "./hacks8SundaySchedule";
 import Styles from "./Styles";
 import { EventTag } from "./enums/EventTag";
+import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 export interface Event {
   name: string;
@@ -44,10 +54,60 @@ function eventTagColor(tag: EventTag) {
 function ScheduleBuilder(props: {
   schedule: { start: string; eventList: Event[] }[];
 }) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalDescription, setModalDescription] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalStartTime, setModalStartTime] = useState("");
+  const [modalEndTime, setModalEndTime] = useState("");
+  const [modalEventType, setModalEventType] = useState(EventTag.IMPORTANT);
+  const [modalLocation, setModalLocation] = useState("");
+
   return (
     <>
       <StatusBar />
       <SafeAreaView style={Styles.login_container}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={Styles.centeredView}>
+            <View style={Styles.modalView}>
+              <Text style={Styles.modalTitle}>{modalTitle}</Text>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "nowrap",
+                  flexDirection: "row",
+                }}
+              >
+                <Text style={Styles.modalText_location}>
+                  {modalLocation} |{" "}
+                </Text>
+                <Text style={Styles.modalText}>
+                  {modalStartTime} - {modalEndTime} |
+                </Text>
+                <Text
+                  style={{ color: eventTagColor(modalEventType), fontSize: 16 }}
+                >
+                  {" "}
+                  {modalEventType}
+                </Text>
+              </View>
+              <Text style={Styles.modalText}> {modalDescription}</Text>
+              <Pressable
+                style={[Styles.modal_button, Styles.modal_buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={Styles.modal_textStyle}>Back to Schedule</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
         <ScrollView>
           {props.schedule.map((events, index) => {
             return (
@@ -59,7 +119,18 @@ function ScheduleBuilder(props: {
                 </View>
                 {events.eventList.map((event, index) => {
                   return (
-                    <View key={index}>
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setModalDescription(event.description);
+                        setModalTitle(event.name);
+                        setModalStartTime(event.startTime);
+                        setModalEndTime(event.endTime);
+                        setModalEventType(event.tag);
+                        setModalLocation(event.location);
+                        setModalVisible(true);
+                      }}
+                    >
                       <Card
                         style={{
                           marginLeft: 15,
@@ -73,7 +144,7 @@ function ScheduleBuilder(props: {
                         <Text style={{ color: "white", fontSize: 18 }}>
                           {event.name}
                         </Text>
-                        <Text style={{ color: "#818181", fontSize: 16 }}>
+                        <Text style={{ color: "#B3B3B3", fontSize: 16 }}>
                           {event.location}
                         </Text>
                         <Text style={{ color: "#818181", fontSize: 16 }}>
@@ -83,7 +154,7 @@ function ScheduleBuilder(props: {
                           {event.tag}
                         </Text>
                       </Card>
-                    </View>
+                    </TouchableOpacity>
                   );
                 })}
               </View>

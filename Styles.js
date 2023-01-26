@@ -140,6 +140,62 @@ const Styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#161618",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modal_button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  modal_buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  modal_buttonClose: {
+    backgroundColor: "#DC4141",
+  },
+  modal_textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: "#818181",
+    fontSize: 16,
+  },
+  modalText_location: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: "#B3B3B3",
+    fontSize: 16,
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
 });
 
 export default Styles;
