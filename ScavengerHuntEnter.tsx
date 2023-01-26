@@ -12,8 +12,9 @@ export type RootStackParamList = {
     clueAnswer: string;
     nextQuestion: string;
     nextAnswer: string;
+    clue_num: number;
   };
-  Question: { question: string; answer: string };
+  Question: { question: string; answer: string; question_num: number };
 };
 
 export default function ScavengerHuntEnter() {

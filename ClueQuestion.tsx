@@ -12,14 +12,16 @@ import Styles from "./Styles";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import { StackScreenProps } from "@react-navigation/stack";
 import { showMessage } from "react-native-flash-message";
+import { useAuth } from "./context/AuthContext";
 
 type Props = StackScreenProps<RootStackParamList, "Clue">;
 
 export default function ClueQuestion({ route, navigation }: Props) {
+  const { userInfo, updateClueScavengerHuntStatus } = useAuth();
   const [userInput, setUserInput] = useState("");
-  const { clue, clueAnswer, nextQuestion, nextAnswer } = route.params;
+  const { clue, clueAnswer, nextQuestion, nextAnswer, clue_num } = route.params;
 
-  const onPress = function onPress() {
+  const onPress = async function onPress() {
     if (userInput === clueAnswer) {
       showMessage({
         message: "Correct!",
@@ -27,9 +29,15 @@ export default function ClueQuestion({ route, navigation }: Props) {
         color: "white",
         titleStyle: { textAlign: "center", fontSize: 19 },
       });
+
+      // Update db
+      const clue_field: string = "clue" + clue_num;
+      await updateClueScavengerHuntStatus(clue_field, userInfo.uid);
+
       navigation.navigate("Question", {
         question: nextQuestion,
         answer: nextAnswer,
+        question_num: clue_num,
       });
     } else {
       showMessage({

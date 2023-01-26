@@ -12,14 +12,16 @@ import Styles from "./Styles";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import { StackScreenProps } from "@react-navigation/stack";
 import { showMessage } from "react-native-flash-message";
+import { useAuth } from "./context/AuthContext";
 
 type Props = StackScreenProps<RootStackParamList, "Question">;
 
 export default function MainQuestion({ route, navigation }: Props) {
+  const { userInfo, updateQuestionScavengerHuntStatus } = useAuth();
   const [userInput, setUserInput] = useState("");
-  const { question, answer } = route.params;
+  const { question, answer, question_num } = route.params;
 
-  const onPress = function onPress() {
+  const onPress = async function onPress() {
     if (userInput === answer) {
       showMessage({
         message: "Correct!",
@@ -27,6 +29,16 @@ export default function MainQuestion({ route, navigation }: Props) {
         color: "white",
         titleStyle: { textAlign: "center", fontSize: 19 },
       });
+
+      // TODO Update db
+      const question_field: string = "question" + question_num;
+      await updateQuestionScavengerHuntStatus(
+        question_field,
+        userInfo.uid,
+        question_num,
+        userInfo.points
+      );
+
       navigation.navigate("Scavenger_Hunt");
     } else {
       showMessage({

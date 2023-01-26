@@ -196,6 +196,7 @@ export const AuthContextProvider = ({
 
       const user = res.user;
       const name = first_name + " " + last_name;
+      const scavenger_hunt_group = generateScavengerHuntGroup();
 
       await firestore().collection("users").doc(user.uid).set({
         uid: user.uid,
@@ -206,8 +207,10 @@ export const AuthContextProvider = ({
         email: email,
         points: 0,
         registered: {},
+        scavenger_hunt_group: scavenger_hunt_group,
         added_time: serverTimestamp(),
       });
+      await createScavengerHuntDocument(user.uid);
       user.sendEmailVerification();
       auth().signOut();
     } catch (err: any) {
@@ -218,6 +221,8 @@ export const AuthContextProvider = ({
   const logIn = async (email: string, password: string) => {
     const res = await auth().signInWithEmailAndPassword(email, password);
     const user = res.user;
+    const docSnap = await firestore().collection("users").doc(user.uid).get();
+    const scavenger_hunt_group = generateScavengerHuntGroup();
 
     if (!user.emailVerified) {
       setUser({ uid: null, email: null });
@@ -225,6 +230,17 @@ export const AuthContextProvider = ({
       auth().signOut();
       return false;
     }
+
+    if (docSnap.data()?.scavenger_hunt_group == null) {
+      await firestore().collection("users").doc(user.uid).update({
+        scavenger_hunt_group: scavenger_hunt_group,
+      });
+    }
+
+    await createScavengerHuntDocument(user.uid);
+
+    setUserInformation(user.uid);
+    setScavengerHuntInformation(user.uid);
 
     return true;
   };
@@ -276,7 +292,7 @@ export const AuthContextProvider = ({
         });
       } else {
         // Check if scavenger hunt group exists because it was added later
-        console.log(docSnap.data()?.scavenger_hunt_group);
+
         if (docSnap.data()?.scavenger_hunt_group == null) {
           await firestore().collection("users").doc(google_user.uid).update({
             scavenger_hunt_group: scavenger_hunt_group,
@@ -292,6 +308,59 @@ export const AuthContextProvider = ({
     } catch (err: any) {
       console.error(err);
     }
+  };
+
+  const updateQuestionScavengerHuntStatus = async (
+    question_answered: string,
+    uid: string,
+    num_questions_answered: number,
+    curr_points: number
+  ) => {
+    if (num_questions_answered === 6) {
+      await firestore()
+        .collection("scavenger-hunt-users")
+        .doc(uid)
+        .update({
+          [question_answered]: true,
+          numQuestionsAnswered: num_questions_answered,
+          completed: true,
+        });
+
+      // Update user points
+      await firestore()
+        .collection("users")
+        .doc(uid)
+        .update({
+          points: 1000 + curr_points,
+        });
+    } else {
+      await firestore()
+        .collection("scavenger-hunt-users")
+        .doc(uid)
+        .update({
+          [question_answered]: true,
+          numQuestionsAnswered: num_questions_answered,
+        });
+    }
+    setScavengerHuntInformation(uid);
+    setUserInformation(uid);
+  };
+
+  const updateClueScavengerHuntStatus = async (
+    clue_answered: string,
+    uid: string
+  ) => {
+    console.log(uid);
+    console.log(clue_answered);
+    await firestore()
+      .collection("scavenger-hunt-users")
+      .doc(uid)
+      .update({
+        [clue_answered]: true,
+        test: true,
+      });
+
+    setScavengerHuntInformation(uid);
   };
 
   const setUserInformation = async (uid: string | null) => {
@@ -418,6 +487,8 @@ export const AuthContextProvider = ({
         setUserInformation,
         getPoints,
         getScavengerHuntAnswers,
+        updateQuestionScavengerHuntStatus,
+        updateClueScavengerHuntStatus,
       }}
     >
       {loading ? null : children}

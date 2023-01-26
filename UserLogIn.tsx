@@ -23,7 +23,6 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
   const logInWithEmail = async () => {
     try {
       const success = await logIn(email, password);
-      alert(success);
     } catch (error: any) {
       alert(error);
     }

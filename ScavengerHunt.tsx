@@ -121,12 +121,11 @@ export default function ScavengerHunt() {
 
   function onPress(question_num: number) {
     const questionNumberInfo = getQuestionNumberInfo(question_num);
-    console.log(questionNumberInfo.clueAnswer);
-    console.log(questionNumberInfo.answer);
     if (questionNumberInfo.clueAnswered) {
       navigation.navigate("Question", {
         question: questionNumberInfo.question,
         answer: questionNumberInfo.answer,
+        question_num: question_num,
       });
     } else {
       navigation.navigate("Clue", {
@@ -134,12 +133,19 @@ export default function ScavengerHunt() {
         clueAnswer: questionNumberInfo.clueAnswer,
         nextQuestion: questionNumberInfo.question,
         nextAnswer: questionNumberInfo.answer,
+        clue_num: question_num,
       });
     }
   }
   const isFocused = useIsFocused();
 
-  useEffect(() => {}, [isFocused]);
+  useEffect(() => {
+    console.log("Use effect scavenger hunt status");
+    console.log(scavengerHuntStatus);
+    if (scavengerHuntStatus.completed) {
+      setScore(1000);
+    }
+  }, [scavengerHuntStatus]);
   return (
     <>
       <StatusBar />
@@ -156,7 +162,7 @@ export default function ScavengerHunt() {
           >
             <Text style={{ color: "white", fontSize: 24 }}>Scavenger Hunt</Text>
             <Text style={{ color: "white", fontSize: 24 }}>
-              {score}/200 points
+              {score}/1000 points
             </Text>
           </View>
           <Text
@@ -189,7 +195,7 @@ export default function ScavengerHunt() {
             </View>
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 2 ? (
-            <View style={{}}>
+            <View style={{ marginBottom: 15 }}>
               <TouchableOpacity onPress={() => onPress(3)}>
                 <View style={Styles.scavenger_hunt_button}>
                   <Text style={{ fontSize: 20, color: "black" }}>3rd Clue</Text>
@@ -198,7 +204,7 @@ export default function ScavengerHunt() {
             </View>
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 3 ? (
-            <View style={{}}>
+            <View style={{ marginBottom: 15 }}>
               <TouchableOpacity onPress={() => onPress(4)}>
                 <View style={Styles.scavenger_hunt_button}>
                   <Text style={{ fontSize: 20, color: "black" }}>4th Clue</Text>
@@ -207,7 +213,7 @@ export default function ScavengerHunt() {
             </View>
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 4 ? (
-            <View style={{}}>
+            <View style={{ marginBottom: 15 }}>
               <TouchableOpacity onPress={() => onPress(5)}>
                 <View style={Styles.scavenger_hunt_button}>
                   <Text style={{ fontSize: 20, color: "black" }}>5th Clue</Text>
@@ -216,7 +222,7 @@ export default function ScavengerHunt() {
             </View>
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 5 ? (
-            <View style={{}}>
+            <View style={{ marginBottom: 15 }}>
               <TouchableOpacity onPress={() => onPress(6)}>
                 <View style={Styles.scavenger_hunt_button}>
                   <Text style={{ fontSize: 20, color: "black" }}>6th Clue</Text>
