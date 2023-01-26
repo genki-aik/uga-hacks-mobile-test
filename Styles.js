@@ -73,6 +73,13 @@ const Styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 50,
   },
+  scavenger_hunt_button_disabled: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 44,
+    backgroundColor: "#00ab41",
+    borderRadius: 50,
+  },
   button_label: {
     color: "#fff",
     fontSize: 15,

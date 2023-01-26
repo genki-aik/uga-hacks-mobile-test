@@ -141,7 +141,6 @@ export default function ScavengerHunt() {
 
   useEffect(() => {
     console.log("Use effect scavenger hunt status");
-    console.log(scavengerHuntStatus);
     if (scavengerHuntStatus.completed) {
       setScore(1000);
     }
@@ -178,57 +177,137 @@ export default function ScavengerHunt() {
             located in MLC! Once you find the password, it unlocks a question
             that you can answer to unlock the next clue!
           </Text>
-          <View style={{ marginBottom: 15 }}>
-            <TouchableOpacity onPress={() => onPress(1)}>
-              <View style={Styles.scavenger_hunt_button}>
-                <Text style={{ fontSize: 20, color: "black" }}>1st Clue</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          {scavengerHuntStatus.numQuestionsAnswered >= 1 ? (
+          {!scavengerHuntStatus.question1 ? (
             <View style={{ marginBottom: 15 }}>
-              <TouchableOpacity onPress={() => onPress(2)}>
+              <TouchableOpacity onPress={() => onPress(1)}>
                 <View style={Styles.scavenger_hunt_button}>
-                  <Text style={{ fontSize: 20, color: "black" }}>2nd Clue</Text>
+                  <Text style={{ fontSize: 20, color: "black" }}>1st Clue</Text>
                 </View>
               </TouchableOpacity>
             </View>
+          ) : (
+            <View style={{ marginBottom: 15 }}>
+              <TouchableOpacity disabled={true}>
+                <View style={Styles.scavenger_hunt_button_disabled}>
+                  <Text style={{ fontSize: 20, color: "black" }}>1st Clue</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+          {scavengerHuntStatus.numQuestionsAnswered >= 1 ? (
+            !scavengerHuntStatus.question2 ? (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity onPress={() => onPress(2)}>
+                  <View style={Styles.scavenger_hunt_button}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      2nd Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity disabled={true}>
+                  <View style={Styles.scavenger_hunt_button_disabled}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      2nd Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 2 ? (
-            <View style={{ marginBottom: 15 }}>
-              <TouchableOpacity onPress={() => onPress(3)}>
-                <View style={Styles.scavenger_hunt_button}>
-                  <Text style={{ fontSize: 20, color: "black" }}>3rd Clue</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            !scavengerHuntStatus.question3 ? (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity onPress={() => onPress(3)}>
+                  <View style={Styles.scavenger_hunt_button}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      3rd Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity disabled={true}>
+                  <View style={Styles.scavenger_hunt_button_disabled}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      3rd Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 3 ? (
-            <View style={{ marginBottom: 15 }}>
-              <TouchableOpacity onPress={() => onPress(4)}>
-                <View style={Styles.scavenger_hunt_button}>
-                  <Text style={{ fontSize: 20, color: "black" }}>4th Clue</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            !scavengerHuntStatus.question4 ? (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity onPress={() => onPress(4)}>
+                  <View style={Styles.scavenger_hunt_button}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      4th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity disabled={true}>
+                  <View style={Styles.scavenger_hunt_button_disabled}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      4th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 4 ? (
-            <View style={{ marginBottom: 15 }}>
-              <TouchableOpacity onPress={() => onPress(5)}>
-                <View style={Styles.scavenger_hunt_button}>
-                  <Text style={{ fontSize: 20, color: "black" }}>5th Clue</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            !scavengerHuntStatus.question5 ? (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity onPress={() => onPress(5)}>
+                  <View style={Styles.scavenger_hunt_button}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      5th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity disabled={true}>
+                  <View style={Styles.scavenger_hunt_button_disabled}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      5th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
           ) : null}
           {scavengerHuntStatus.numQuestionsAnswered >= 5 ? (
-            <View style={{ marginBottom: 15 }}>
-              <TouchableOpacity onPress={() => onPress(6)}>
-                <View style={Styles.scavenger_hunt_button}>
-                  <Text style={{ fontSize: 20, color: "black" }}>6th Clue</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            !scavengerHuntStatus.question6 ? (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity onPress={() => onPress(6)}>
+                  <View style={Styles.scavenger_hunt_button}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      6th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ marginBottom: 15 }}>
+                <TouchableOpacity disabled={true}>
+                  <View style={Styles.scavenger_hunt_button_disabled}>
+                    <Text style={{ fontSize: 20, color: "black" }}>
+                      6th Clue
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )
           ) : null}
         </ScrollView>
       </SafeAreaView>
