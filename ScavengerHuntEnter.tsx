@@ -1,6 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { useAuth } from "./context/AuthContext";
 import ClueQuestion from "./ClueQuestion";
 import ScavengerHunt from "./ScavengerHunt";
 import MainQuestion from "./MainQuestion";

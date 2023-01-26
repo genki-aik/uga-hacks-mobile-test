@@ -17,7 +17,6 @@ import { saturdaySchedule } from "./hacks8SaturdaySchedule";
 import { sundaySchedule } from "./hacks8SundaySchedule";
 import Styles from "./Styles";
 import { EventTag } from "./enums/EventTag";
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 export interface Event {
   name: string;

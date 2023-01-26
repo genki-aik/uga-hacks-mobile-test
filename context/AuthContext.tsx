@@ -350,8 +350,6 @@ export const AuthContextProvider = ({
     clue_answered: string,
     uid: string
   ) => {
-    console.log(uid);
-    console.log(clue_answered);
     await firestore()
       .collection("scavenger-hunt-users")
       .doc(uid)

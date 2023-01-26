@@ -127,7 +127,6 @@ export default function ScavengerHunt() {
   }
 
   useEffect(() => {
-    console.log("Use effect scavenger hunt status");
     if (scavengerHuntStatus.completed) {
       setScore(1000);
     }
