@@ -12,10 +12,22 @@ import {
 import { ScavengerHuntAnswerType, useAuth } from "./context/AuthContext";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import { path1_clues } from "./path1";
+import { path2_clues } from "./path2";
+import { path3_clues } from "./path3";
+import { path4_clues } from "./path4";
+import { path5_clues } from "./path5";
 import { main_questions } from "./main_question";
 import Styles from "./Styles";
 
 export default function ScavengerHunt() {
+  interface ScavengerHuntClueType {
+    clue1: string;
+    clue2: string;
+    clue3: string;
+    clue4: string;
+    clue5: string;
+    clue6: string;
+  }
   const { userInfo, scavengerHuntStatus, getScavengerHuntAnswers } = useAuth();
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<ScavengerHuntAnswerType>({
@@ -32,6 +44,25 @@ export default function ScavengerHunt() {
     question5_answer: "",
     question6_answer: "",
   });
+  const [clues, setClues] = useState<ScavengerHuntClueType>({
+    clue1: "",
+    clue2: "",
+    clue3: "",
+    clue4: "",
+    clue5: "",
+    clue6: "",
+  });
+
+  function getCluesHelper(clues: ScavengerHuntClueType) {
+    setClues({
+      clue1: clues.clue1,
+      clue2: clues.clue2,
+      clue3: clues.clue3,
+      clue4: clues.clue4,
+      clue5: clues.clue5,
+      clue6: clues.clue6,
+    });
+  }
 
   // Retrieve the answer only once
   useEffect(() => {
@@ -41,6 +72,28 @@ export default function ScavengerHunt() {
       );
     }
 
+    function getClues() {
+      switch (userInfo.scavenger_hunt_path_num) {
+        case 1:
+          getCluesHelper(path1_clues);
+          return;
+        case 2:
+          getCluesHelper(path2_clues);
+          return;
+        case 3:
+          getCluesHelper(path3_clues);
+          return;
+        case 4:
+          getCluesHelper(path4_clues);
+          return;
+        case 5:
+          getCluesHelper(path5_clues);
+          return;
+        default:
+          return;
+      }
+    }
+    getClues();
     getAnswers();
   }, []);
 

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { serverTimestamp } from "firebase/firestore";
 
 export interface UserType {
   email: string | null;
@@ -117,9 +116,11 @@ export const AuthContextProvider = ({
           uid: curr_user.uid,
         });
         setUserInformation(curr_user.uid);
+        setScavengerHuntInformation(curr_user.uid);
       } else {
         setUser({ email: null, uid: null });
         resetUserInformation();
+        resetScavengerHuntInformation();
       }
     });
     setLoading(false);
@@ -208,7 +209,7 @@ export const AuthContextProvider = ({
         points: 0,
         registered: {},
         scavenger_hunt_group: scavenger_hunt_group,
-        added_time: serverTimestamp(),
+        added_time: firestore.FieldValue.serverTimestamp(),
       });
       await createScavengerHuntDocument(user.uid);
 
@@ -289,7 +290,7 @@ export const AuthContextProvider = ({
           points: 0,
           registered: {},
           scavenger_hunt_group: scavenger_hunt_group,
-          added_time: serverTimestamp(),
+          added_time: firestore.FieldValue.serverTimestamp(),
         });
       } else {
         // Check if scavenger hunt group exists because it was added later
@@ -448,6 +449,25 @@ export const AuthContextProvider = ({
     });
   };
 
+  const resetScavengerHuntInformation = () => {
+    setScavengerHuntStatus({
+      clue1: false,
+      clue2: false,
+      clue3: false,
+      clue4: false,
+      clue5: false,
+      clue6: false,
+      question1: false,
+      question2: false,
+      question3: false,
+      question4: false,
+      question5: false,
+      question6: false,
+      numQuestionsAnswered: 0,
+      completed: false,
+    });
+  };
+
   const getPoints = async (uid: string | null) => {
     if (!uid) {
       return -1;
@@ -467,6 +487,7 @@ export const AuthContextProvider = ({
   const logOut = async () => {
     setUser({ email: null, uid: null });
     resetUserInformation();
+    resetScavengerHuntInformation();
     await auth().signOut();
   };
 
