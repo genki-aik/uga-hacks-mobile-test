@@ -4,8 +4,10 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 // @ts-ignore
 import { Card } from "react-native-shadow-cards";
 import { fridaySchedule } from "./hacks8FridaySchedule";
+import { saturdaySchedule } from "./hacks8SaturdaySchedule";
+import { sundaySchedule } from "./hacks8SundaySchedule";
 import Styles from "./Styles";
-import { EventTag } from "./hacks8FridaySchedule";
+import { EventTag } from "./enums/EventTag";
 
 export interface Event {
   name: string;
@@ -110,10 +112,10 @@ export default function ScheduleScreen() {
         {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
       </Tab.Screen>
       <Tab.Screen name="Saturday">
-        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+        {(props) => <ScheduleBuilder schedule={saturdaySchedule} {...props} />}
       </Tab.Screen>
       <Tab.Screen name="Sunday">
-        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+        {(props) => <ScheduleBuilder schedule={sundaySchedule} {...props} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

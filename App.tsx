@@ -11,13 +11,10 @@ import {
   SafeAreaView,
   StatusBar,
   Text,
-  TouchableOpacity,
   View,
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import Parse from 'parse/react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -31,20 +28,8 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import FlashMessage from "react-native-flash-message";
 import Schedule from "./Schedule";
-import ScavengerHunt from "./ScavengerHunt";
-import ClueQuestion from "./ClueQuestion";
 import ScavengerHuntEnter from "./ScavengerHuntEnter";
 
-// // Your Parse initialization configuration goes here
-// Parse.setAsyncStorage(AsyncStorage);
-// const PARSE_APPLICATION_ID: string = 'YOUR_PARSE_APPLICATION_ID';
-// const PARSE_HOST_URL: string = 'YOUR_PARSE_HOST_URL';
-// const PARSE_JAVASCRIPT_ID: string = 'YOUR_PARSE_JAVASCRIPT_ID';
-// Parse.initialize(PARSE_APPLICATION_ID, PARSE_JAVASCRIPT_ID);
-// Parse.serverURL = PARSE_HOST_URL;
-
-// Wrap your old app screen in a separate function, so you can create a screen inside the navigator
-// You can also declare your screens in a separate file, export and import here to reduce some clutter
 function UserRegistrationScreen() {
   return (
     <>
@@ -143,7 +128,6 @@ function HomeScreen() {
 // This method instantiates and creates a new StackNavigator
 const Stack = createStackNavigator();
 
-// Add the stack navigator and inside it you can insert all your app screens, in the desired order
 const App = () => {
   GoogleSignin.configure({
     webClientId:

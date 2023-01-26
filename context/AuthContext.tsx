@@ -211,6 +211,7 @@ export const AuthContextProvider = ({
         added_time: serverTimestamp(),
       });
       await createScavengerHuntDocument(user.uid);
+
       user.sendEmailVerification();
       auth().signOut();
     } catch (err: any) {
@@ -292,7 +293,6 @@ export const AuthContextProvider = ({
         });
       } else {
         // Check if scavenger hunt group exists because it was added later
-
         if (docSnap.data()?.scavenger_hunt_group == null) {
           await firestore().collection("users").doc(google_user.uid).update({
             scavenger_hunt_group: scavenger_hunt_group,

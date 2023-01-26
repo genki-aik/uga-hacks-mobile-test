@@ -1,6 +1,6 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,15 +15,9 @@ import { path1_clues } from "./path1";
 import { main_questions } from "./main_question";
 import Styles from "./Styles";
 
-// Use context for scavenger hunt path number COMPLETE
-// Create component for displaying clue question COMPLETE
-// Create component for displaying question COMPLETE
-// Load answer from database and cache it
-
 export default function ScavengerHunt() {
   const { userInfo, scavengerHuntStatus, getScavengerHuntAnswers } = useAuth();
   const [score, setScore] = useState(0);
-  const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [answers, setAnswers] = useState<ScavengerHuntAnswerType>({
     clue1_answer: "",
     clue2_answer: "",
@@ -39,12 +33,6 @@ export default function ScavengerHunt() {
     question6_answer: "",
   });
 
-  //   const answers: ScavengerHuntAnswerType = useMemo(() => {
-  //     console.log("Get answers");
-  //     console.log(userInfo.scavenger_hunt_path_num);
-  //     return getScavengerHuntAnswers(userInfo.scavenger_hunt_path_num);
-  //   }, []);
-
   // Retrieve the answer only once
   useEffect(() => {
     async function getAnswers() {
@@ -52,7 +40,7 @@ export default function ScavengerHunt() {
         await getScavengerHuntAnswers(userInfo.scavenger_hunt_path_num)
       );
     }
-    console.log("Use effect RUN");
+
     getAnswers();
   }, []);
 
@@ -137,7 +125,6 @@ export default function ScavengerHunt() {
       });
     }
   }
-  const isFocused = useIsFocused();
 
   useEffect(() => {
     console.log("Use effect scavenger hunt status");

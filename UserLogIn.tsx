@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useState } from "react";
 import {
-  Alert,
   Image,
   ScrollView,
   Text,
@@ -8,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-//import Parse from 'parse/react-native';
 import { useNavigation } from "@react-navigation/native";
 import Styles from "./Styles";
 import { useAuth } from "./context/AuthContext";
@@ -22,7 +20,7 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
 
   const logInWithEmail = async () => {
     try {
-      const success = await logIn(email, password);
+      await logIn(email, password);
     } catch (error: any) {
       alert(error);
     }
@@ -35,32 +33,6 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
       alert(error);
     }
   };
-
-  //   const doUserLogIn = async function (): Promise<boolean> {
-  //     // Note that this values come from state variables that we've declared before
-  //     const usernameValue: string = username;
-  //     const passwordValue: string = password;
-  //     return await Parse.User.logIn(usernameValue, passwordValue)
-  //       .then(async (loggedInUser: Parse.User) => {
-  //         // logIn returns the corresponding ParseUser object
-  //         Alert.alert(
-  //           'Success!',
-  //           `User ${loggedInUser.get('username')} has successfully signed in!`,
-  //         );
-  //         // To verify that this is in fact the current user, currentAsync can be used
-  //         const currentUser: Parse.User = await Parse.User.currentAsync();
-  //         console.log(loggedInUser === currentUser);
-  //         // Navigation.navigate takes the user to the screen named after the one
-  //         // passed as parameter
-  //         navigation.navigate('Home');
-  //         return true;
-  //       })
-  //       .catch((error: object) => {
-  //         // Error can be caused by wrong parameters or lack of Internet connection
-  //         Alert.alert('Error!', error.message);
-  //         return false;
-  //       });
-  //   };
 
   return (
     <ScrollView>
