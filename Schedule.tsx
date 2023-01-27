@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,8 @@ import { saturdaySchedule } from "./hacks8SaturdaySchedule";
 import { sundaySchedule } from "./hacks8SundaySchedule";
 import Styles from "./Styles";
 import { EventTag } from "./enums/EventTag";
+import { useAuth } from "./context/AuthContext";
+import { useIsFocused } from "@react-navigation/native";
 
 export interface Event {
   name: string;
@@ -167,6 +169,35 @@ function ScheduleBuilder(props: {
 
 export default function ScheduleScreen() {
   const Tab = createMaterialTopTabNavigator();
+  const {
+    getSchedule,
+    scheduleFriday,
+    scheduleSaturday,
+    scheduleSunday,
+    changedFriday,
+    setChangedFriday,
+    changedSaturday,
+    setChangedSaturday,
+    changedSunday,
+    setChangedSunday,
+  } = useAuth();
+
+  useEffect(() => {
+    if (changedFriday) {
+      getSchedule("friday");
+      setChangedFriday(false);
+    }
+
+    if (changedSaturday) {
+      getSchedule("saturday");
+      setChangedSaturday(false);
+    }
+
+    if (changedSunday) {
+      getSchedule("sunday");
+      setChangedSunday(false);
+    }
+  }, [changedFriday, changedSaturday, changedSunday]);
 
   return (
     <Tab.Navigator
@@ -179,13 +210,13 @@ export default function ScheduleScreen() {
       }}
     >
       <Tab.Screen name="Friday">
-        {(props) => <ScheduleBuilder schedule={fridaySchedule} {...props} />}
+        {(props) => <ScheduleBuilder schedule={scheduleFriday} {...props} />}
       </Tab.Screen>
       <Tab.Screen name="Saturday">
-        {(props) => <ScheduleBuilder schedule={saturdaySchedule} {...props} />}
+        {(props) => <ScheduleBuilder schedule={scheduleSaturday} {...props} />}
       </Tab.Screen>
       <Tab.Screen name="Sunday">
-        {(props) => <ScheduleBuilder schedule={sundaySchedule} {...props} />}
+        {(props) => <ScheduleBuilder schedule={scheduleSunday} {...props} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

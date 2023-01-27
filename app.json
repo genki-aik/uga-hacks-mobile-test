@@ -2,8 +2,10 @@
   "expo": {
     "name": "uga-hacks-mobile-event",
     "slug": "uga-hacks-mobile-event",
-    "plugins": ["@react-native-google-signin/google-signin"],
-    "version": "1.0.0",
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,7 +17,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.genki135.ugahacksmobileevent"
@@ -23,10 +27,11 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/byte_mini.png",
+        "backgroundColor": "#000000"
       },
-      "package": "com.genki135.ugahacksmobileevent"
+      "package": "com.genki135.ugahacksmobileevent",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"

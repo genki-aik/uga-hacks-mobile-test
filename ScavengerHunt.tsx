@@ -11,12 +11,6 @@ import {
 } from "react-native";
 import { ScavengerHuntAnswerType, useAuth } from "./context/AuthContext";
 import { RootStackParamList } from "./ScavengerHuntEnter";
-import { path1_clues } from "./path1";
-import { path2_clues } from "./path2";
-import { path3_clues } from "./path3";
-import { path4_clues } from "./path4";
-import { path5_clues } from "./path5";
-import { main_questions } from "./main_question";
 import Styles from "./Styles";
 
 export default function ScavengerHunt() {
@@ -28,74 +22,38 @@ export default function ScavengerHunt() {
     clue5: string;
     clue6: string;
   }
-  const { userInfo, scavengerHuntStatus, getScavengerHuntAnswers } = useAuth();
+  const {
+    userInfo,
+    scavengerHuntStatus,
+    getScavengerHuntAnswers,
+    getScavengerHuntQuestions,
+    changedQuestions,
+    setChangedQuestions,
+    changedAnswers,
+    setChangedAnswers,
+    clues,
+    questions,
+    clueAnswers,
+    mainAnswers,
+  } = useAuth();
   const [score, setScore] = useState(0);
-  const [answers, setAnswers] = useState<ScavengerHuntAnswerType>({
-    clue1_answer: "",
-    clue2_answer: "",
-    clue3_answer: "",
-    clue4_answer: "",
-    clue5_answer: "",
-    clue6_answer: "",
-    question1_answer: "",
-    question2_answer: "",
-    question3_answer: "",
-    question4_answer: "",
-    question5_answer: "",
-    question6_answer: "",
-  });
-  const [clues, setClues] = useState<ScavengerHuntClueType>({
-    clue1: "",
-    clue2: "",
-    clue3: "",
-    clue4: "",
-    clue5: "",
-    clue6: "",
-  });
 
-  function getCluesHelper(clues: ScavengerHuntClueType) {
-    setClues({
-      clue1: clues.clue1,
-      clue2: clues.clue2,
-      clue3: clues.clue3,
-      clue4: clues.clue4,
-      clue5: clues.clue5,
-      clue6: clues.clue6,
-    });
-  }
-
-  // Retrieve the answer only once
+  // Listen for changes in questions
   useEffect(() => {
-    async function getAnswers() {
-      setAnswers(
-        await getScavengerHuntAnswers(userInfo.scavenger_hunt_path_num)
-      );
+    if (changedQuestions) {
+      console.log("changed questions");
+      getScavengerHuntQuestions();
+      setChangedQuestions(false);
     }
+  }, [changedQuestions]);
 
-    function getClues() {
-      switch (userInfo.scavenger_hunt_path_num) {
-        case 1:
-          getCluesHelper(path1_clues);
-          return;
-        case 2:
-          getCluesHelper(path2_clues);
-          return;
-        case 3:
-          getCluesHelper(path3_clues);
-          return;
-        case 4:
-          getCluesHelper(path4_clues);
-          return;
-        case 5:
-          getCluesHelper(path5_clues);
-          return;
-        default:
-          return;
-      }
+  // Listen for changes in answers
+  useEffect(() => {
+    if (changedAnswers) {
+      getScavengerHuntAnswers();
+      setChangedAnswers(false);
     }
-    getClues();
-    getAnswers();
-  }, []);
+  }, [changedAnswers]);
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -104,50 +62,50 @@ export default function ScavengerHunt() {
       case 1:
         return {
           clueAnswered: scavengerHuntStatus.clue1,
-          clueQuestion: path1_clues.clue1,
-          clueAnswer: answers.clue1_answer,
-          question: main_questions.question1,
-          answer: answers.question1_answer,
+          clueQuestion: clues.clue1, // TODO
+          clueAnswer: clueAnswers.clue1_answer,
+          question: questions.question1,
+          answer: mainAnswers.question1_answer,
         };
       case 2:
         return {
           clueAnswered: scavengerHuntStatus.clue2,
-          clueQuestion: path1_clues.clue2,
-          clueAnswer: answers.clue2_answer,
-          question: main_questions.question2,
-          answer: answers.question2_answer,
+          clueQuestion: clues.clue2,
+          clueAnswer: clueAnswers.clue2_answer,
+          question: questions.question2,
+          answer: mainAnswers.question2_answer,
         };
       case 3:
         return {
           clueAnswered: scavengerHuntStatus.clue3,
-          clueQuestion: path1_clues.clue3,
-          clueAnswer: answers.clue3_answer,
-          question: main_questions.question3,
-          answer: answers.question3_answer,
+          clueQuestion: clues.clue3,
+          clueAnswer: clueAnswers.clue3_answer,
+          question: questions.question3,
+          answer: mainAnswers.question3_answer,
         };
       case 4:
         return {
           clueAnswered: scavengerHuntStatus.clue4,
-          clueQuestion: path1_clues.clue4,
-          clueAnswer: answers.clue4_answer,
-          question: main_questions.question4,
-          answer: answers.question4_answer,
+          clueQuestion: clues.clue4,
+          clueAnswer: clueAnswers.clue4_answer,
+          question: questions.question4,
+          answer: mainAnswers.question4_answer,
         };
       case 5:
         return {
           clueAnswered: scavengerHuntStatus.clue5,
-          clueQuestion: path1_clues.clue5,
-          clueAnswer: answers.clue5_answer,
-          question: main_questions.question5,
-          answer: answers.question5_answer,
+          clueQuestion: clues.clue5,
+          clueAnswer: clueAnswers.clue5_answer,
+          question: questions.question5,
+          answer: mainAnswers.question5_answer,
         };
       case 6:
         return {
           clueAnswered: scavengerHuntStatus.clue6,
-          clueQuestion: path1_clues.clue6,
-          clueAnswer: answers.clue6_answer,
-          question: main_questions.question6,
-          answer: answers.question6_answer,
+          clueQuestion: clues.clue6,
+          clueAnswer: clueAnswers.clue6_answer,
+          question: questions.question6,
+          answer: mainAnswers.question6_answer,
         };
       default:
         return {

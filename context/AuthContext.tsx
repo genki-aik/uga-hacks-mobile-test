@@ -91,6 +91,20 @@ export const AuthContextProvider = ({
       completed: false,
     });
   const [loading, setLoading] = useState<boolean>(false);
+  const [points, setPoints] = useState(0);
+  const [changedPoints, setChangedPoints] = useState(false);
+  const [scheduleFriday, setScheduleFriday] = useState([]);
+  const [scheduleSaturday, setScheduleSaturday] = useState([]);
+  const [scheduleSunday, setScheduleSunday] = useState([]);
+  const [changedFriday, setChangedFriday] = useState(false);
+  const [changedSaturday, setChangedSaturday] = useState(false);
+  const [changedSunday, setChangedSunday] = useState(false);
+  const [changedQuestions, setChangedQuestions] = useState(false);
+  const [questions, setQuestions] = useState({});
+  const [clues, setClues] = useState({});
+  const [clueAnswers, setClueAnswers] = useState({});
+  const [mainAnswers, setMainAnswers] = useState({});
+  const [changedAnswers, setChangedAnswers] = useState(false);
 
   // Stage Environment
   // const userRefStage = collection(db, "users-stage");
@@ -124,6 +138,81 @@ export const AuthContextProvider = ({
       }
     });
     setLoading(false);
+
+    return () => unsubscribe();
+  }, []);
+
+  // Point change listener
+  useEffect(() => {
+    if (user.uid == null) {
+      return;
+    }
+
+    const unsubscribe = firestore()
+      .collection("users")
+      .doc(user.uid)
+      .onSnapshot(() => {
+        setChangedPoints(true);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Friday change listener
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("schedules")
+      .doc("friday")
+      .onSnapshot(() => {
+        setChangedFriday(true);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Saturday Change Listener
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("schedules")
+      .doc("saturday")
+      .onSnapshot(() => {
+        setChangedSaturday(true);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Sunday Change Listener
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("schedules")
+      .doc("sunday")
+      .onSnapshot(() => {
+        setChangedSunday(true);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Question Change Listener
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("scavenger-hunt-questions")
+      .onSnapshot(() => {
+        console.log("Questions changed");
+        setChangedQuestions(true);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Answers Change Listener
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection("scavenger-hunt-answers")
+      .onSnapshot(() => {
+        setChangedAnswers(true);
+      });
 
     return () => unsubscribe();
   }, []);
@@ -230,7 +319,7 @@ export const AuthContextProvider = ({
       setUser({ uid: null, email: null });
       resetUserInformation();
       auth().signOut();
-      return false;
+      return false; // TODO Throw error
     }
 
     if (docSnap.data()?.scavenger_hunt_group == null) {
@@ -347,6 +436,39 @@ export const AuthContextProvider = ({
     setUserInformation(uid);
   };
 
+  const getScavengerHuntQuestions = async () => {
+    const docName = "path" + userInfo.scavenger_hunt_path_num; // Can remove based on how I name document
+
+    const clueSnapshot = await firestore()
+      .collection("scavenger-hunt-questions")
+      .doc(docName)
+      .get();
+    const mainSnapshot = await firestore()
+      .collection("scavenger-hunt-questions")
+      .doc("main")
+      .get();
+
+    const clues = {
+      clue1: clueSnapshot.data()?.clue1,
+      clue2: clueSnapshot.data()?.clue2,
+      clue3: clueSnapshot.data()?.clue3,
+      clue4: clueSnapshot.data()?.clue4,
+      clue5: clueSnapshot.data()?.clue5,
+      clue6: clueSnapshot.data()?.clue6,
+    };
+    const questions = {
+      question1: mainSnapshot.data()?.question1,
+      question2: mainSnapshot.data()?.question2,
+      question3: mainSnapshot.data()?.question3,
+      question4: mainSnapshot.data()?.question4,
+      question5: mainSnapshot.data()?.question5,
+      question6: mainSnapshot.data()?.question6,
+    };
+    console.log(clues);
+    setClues(clues);
+    setQuestions(questions);
+  };
+
   const updateClueScavengerHuntStatus = async (
     clue_answered: string,
     uid: string
@@ -407,12 +529,10 @@ export const AuthContextProvider = ({
     });
   };
 
-  const getScavengerHuntAnswers = async (
-    path_num: number
-  ): Promise<ScavengerHuntAnswerType> => {
+  const getScavengerHuntAnswers = async () => {
     const docSnap = await firestore()
       .collection("scavenger-hunt-answers")
-      .doc(path_num.toString())
+      .doc(userInfo.scavenger_hunt_path_num?.toString())
       .get();
 
     const docSnapQuestionAnswers = await firestore()
@@ -420,13 +540,16 @@ export const AuthContextProvider = ({
       .doc("main-questions")
       .get();
 
-    const scavengerHuntAnswers = {
+    const clue_answers = {
       clue1_answer: docSnap.data()?.clue1_answer,
       clue2_answer: docSnap.data()?.clue2_answer,
       clue3_answer: docSnap.data()?.clue3_answer,
       clue4_answer: docSnap.data()?.clue4_answer,
       clue5_answer: docSnap.data()?.clue5_answer,
       clue6_answer: docSnap.data()?.clue6_answer,
+    };
+
+    const main_answers = {
       question1_answer: docSnapQuestionAnswers.data()?.question1_answer,
       question2_answer: docSnapQuestionAnswers.data()?.question2_answer,
       question3_answer: docSnapQuestionAnswers.data()?.question3_answer,
@@ -435,7 +558,31 @@ export const AuthContextProvider = ({
       question6_answer: docSnapQuestionAnswers.data()?.question6_answer,
     };
 
-    return scavengerHuntAnswers;
+    setClueAnswers(clue_answers);
+    setMainAnswers(main_answers);
+  };
+
+  const getSchedule = async function getSchedule(
+    day: "friday" | "saturday" | "sunday"
+  ) {
+    const docSnap = await firestore().collection("schedules").doc(day).get();
+
+    switch (day) {
+      case "friday":
+        setScheduleFriday(docSnap.data()?.schedule);
+        return;
+
+      case "saturday":
+        setScheduleSaturday(docSnap.data()?.schedule);
+        return;
+
+      case "sunday":
+        setScheduleSunday(docSnap.data()?.schedule);
+        return;
+
+      default:
+        return;
+    }
   };
 
   const resetUserInformation = () => {
@@ -472,6 +619,7 @@ export const AuthContextProvider = ({
     if (!uid) {
       return -1;
     }
+    console.log("Get points");
     const docSnap = await firestore()
       .collection("users")
       .doc(uid ? uid : "")
@@ -481,7 +629,7 @@ export const AuthContextProvider = ({
       return null;
     }
 
-    return docSnap.data()?.points;
+    setPoints(docSnap.data()?.points);
   };
 
   const logOut = async () => {
@@ -508,6 +656,28 @@ export const AuthContextProvider = ({
         getScavengerHuntAnswers,
         updateQuestionScavengerHuntStatus,
         updateClueScavengerHuntStatus,
+        scheduleFriday,
+        scheduleSaturday,
+        scheduleSunday,
+        getSchedule,
+        changedFriday,
+        setChangedFriday,
+        changedSaturday,
+        setChangedSaturday,
+        changedSunday,
+        setChangedSunday,
+        changedPoints,
+        setChangedPoints,
+        points,
+        getScavengerHuntQuestions,
+        changedQuestions,
+        setChangedQuestions,
+        clues,
+        questions,
+        changedAnswers,
+        setChangedAnswers,
+        clueAnswers,
+        mainAnswers,
       }}
     >
       {loading ? null : children}

@@ -18,11 +18,40 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  function errorCodeRedirect(code: string) {
+    switch (code) {
+      case "auth/user-not-found":
+        alert(
+          "Email not found! Please sign up with your email before logging in!"
+        );
+        break;
+      case "auth/wrong-password":
+        alert(
+          "Incorrect password. If you forgot your password, please go on mybyte.ugahacks.com"
+        );
+        break;
+      case "auth/too-many-requests":
+        alert(
+          "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password on mybyte.ugahacks.com or try again later."
+        );
+        break;
+      default:
+        alert("Error, please try again");
+    }
+  }
+
   const logInWithEmail = async () => {
     try {
-      await logIn(email, password);
+      const isSuccess = await logIn(email, password);
+
+      if (!isSuccess) {
+        // Not verified
+        alert(
+          "Email was not verified. Please verify your email by clicking the link sent to your email."
+        );
+      }
     } catch (error: any) {
-      alert(error);
+      errorCodeRedirect(error.code);
     }
   };
 
@@ -30,6 +59,7 @@ export const UserLogIn: FC<{}> = ({}): ReactElement => {
     try {
       await logInWithGoogle();
     } catch (error: any) {
+      console.log(error.code);
       alert(error);
     }
   };
