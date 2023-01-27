@@ -47,6 +47,7 @@ export default function MainQuestion({ route, navigation }: Props) {
         color: "black",
         titleStyle: { textAlign: "center", fontSize: 19 },
       });
+      setUserInput("");
     }
   };
   return (

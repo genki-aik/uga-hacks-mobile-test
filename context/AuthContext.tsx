@@ -92,7 +92,7 @@ export const AuthContextProvider = ({
     });
   const [loading, setLoading] = useState<boolean>(false);
   const [points, setPoints] = useState(0);
-  const [changedPoints, setChangedPoints] = useState(false);
+  const [changedPoints, setChangedPoints] = useState(true);
   const [scheduleFriday, setScheduleFriday] = useState([]);
   const [scheduleSaturday, setScheduleSaturday] = useState([]);
   const [scheduleSunday, setScheduleSunday] = useState([]);
@@ -152,11 +152,12 @@ export const AuthContextProvider = ({
       .collection("users")
       .doc(user.uid)
       .onSnapshot(() => {
+        console.log("Points trigger listener");
         setChangedPoints(true);
       });
 
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   // Friday change listener
   useEffect(() => {
@@ -204,7 +205,7 @@ export const AuthContextProvider = ({
       });
 
     return () => unsubscribe();
-  }, []);
+  }, [userInfo]);
 
   // Answers Change Listener
   useEffect(() => {
@@ -215,7 +216,7 @@ export const AuthContextProvider = ({
       });
 
     return () => unsubscribe();
-  }, []);
+  }, [userInfo]);
 
   const validUser = () => {
     if (user) {
@@ -619,7 +620,7 @@ export const AuthContextProvider = ({
     if (!uid) {
       return -1;
     }
-    console.log("Get points");
+    console.log("function call get points");
     const docSnap = await firestore()
       .collection("users")
       .doc(uid ? uid : "")
@@ -628,7 +629,7 @@ export const AuthContextProvider = ({
     if (!docSnap.exists) {
       return null;
     }
-
+    console.log(docSnap.data());
     setPoints(docSnap.data()?.points);
   };
 

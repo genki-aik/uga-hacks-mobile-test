@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { ScavengerHuntAnswerType, useAuth } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import { RootStackParamList } from "./ScavengerHuntEnter";
 import Styles from "./Styles";
 

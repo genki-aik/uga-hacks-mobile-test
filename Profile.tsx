@@ -14,26 +14,18 @@ export const HelloUser: FC<{}> = ({}): ReactElement => {
   const hacks8Logo = require("./assets/byte_mini.png");
 
   // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const user_points = await getPoints(user.uid);
-  //     if (user_points < 0) {
-  //       setLoading(true);
-  //     } else {
-  //       setLoading(false);
-  //     }
-  //     setPoints(user_points);
-  //   };
-  //   console.log("Fetching points");
-  //   fetchData();
+  //   console.log("Get points");
+  //   getPoints(user.uid);
   // }, []);
 
   useEffect(() => {
     console.log("Points changed");
+    console.log(changedPoints);
     if (changedPoints) {
       getPoints(user.uid);
       setChangedPoints(false);
     }
-  }, [changedPoints]);
+  }, [changedPoints, user]);
 
   return (
     <>

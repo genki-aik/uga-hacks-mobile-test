@@ -13,7 +13,11 @@ export type RootStackParamList = {
     nextAnswer: string;
     clue_num: number;
   };
-  Question: { question: string; answer: string; question_num: number };
+  Question: {
+    question: string;
+    answer: string;
+    question_num: number;
+  };
 };
 
 export default function ScavengerHuntEnter() {
